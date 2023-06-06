@@ -1,0 +1,6 @@
+name: HardcoreMode
+version: '${project.version}'
+main: com.eofitg.hardcore.Hardcore
+api-version: 1.18
+authors: [ eofitg ]
+description: Add hardcore mode to server.
