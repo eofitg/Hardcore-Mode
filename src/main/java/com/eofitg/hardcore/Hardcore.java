@@ -7,13 +7,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Hardcore extends JavaPlugin {
     private static Hardcore instance;
+    private static String pluginName;
     public static Hardcore getInstance() {
         return instance;
     }
+    public static String getPluginName() {
+        return pluginName;
+    }
+
     @Override
     public void onEnable() {
         // Plugin startup logic
         instance = this;
+        pluginName = instance.getName();
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         CommandRegister.register(ConfigReader.getCmdNames());
     }
@@ -22,5 +28,6 @@ public final class Hardcore extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         instance = null;
+        pluginName = null;
     }
 }
