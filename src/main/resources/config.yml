@@ -1,0 +1,6 @@
+playerNames:
+alive:
+commandNames:
+  - hardcore
+commands:
+  hardcore: [hardcore, hardcoremode, h, hm]
