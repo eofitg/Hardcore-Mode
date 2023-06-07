@@ -1,20 +1,32 @@
-/*
- Deprecated.
- Go to check TabCompleter.java
- */
-
 package com.eofitg.hardcore.cmdoperation;
 
 import com.eofitg.hardcore.ConfigReader;
 import com.eofitg.hardcore.Hardcore;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 
-public class CommandHandler implements CommandExecutor {
+import java.util.Arrays;
+import java.util.List;
+
+public class TabCompleter implements TabExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String args[]) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        List<String> str = Arrays.asList("on", "off", "reset");
+        if (sender instanceof Player) {
+            if (args.length > 1) {
+                return null;
+            } else {
+                return str;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (CommandChecker.conform(label, "hardcore")) {
             if (!sender.isOp()) {
                 sender.sendMessage(ChatColor.RED + "No permission.");
