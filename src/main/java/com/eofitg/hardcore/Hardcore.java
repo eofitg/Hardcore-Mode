@@ -55,6 +55,14 @@ public final class Hardcore extends JavaPlugin {
                     }
                 }
             }
+        } else {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                String playerName = player.getName();
+                List<String> playerNames = ConfigReader.getPlayerNames();
+                if (playerNames.contains(playerName)) {
+                    player.setGameMode(GameMode.SURVIVAL);
+                }
+            }
         }
     }
 
