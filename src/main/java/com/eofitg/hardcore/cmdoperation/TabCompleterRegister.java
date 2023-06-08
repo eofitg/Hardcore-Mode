@@ -5,13 +5,13 @@ import org.bukkit.Bukkit;
 import java.util.List;
 import java.util.Objects;
 
-public class CommandRegister {
+public class TabCompleterRegister {
     public static void register(List<String> cmdNames) {
         for (String cmdName : cmdNames) {
-            CommandRegister.register(cmdName);
+            TabCompleterRegister.register(cmdName);
         }
     }
     public static void register(String cmdName) {
-        Objects.requireNonNull(Bukkit.getPluginCommand(cmdName)).setExecutor(new CommandHandler());
+        Objects.requireNonNull(Bukkit.getPluginCommand(cmdName)).setTabCompleter(new TabCompleter());
     }
 }

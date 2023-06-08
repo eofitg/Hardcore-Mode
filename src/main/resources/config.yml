@@ -1,6 +1,7 @@
 playerNames:
 alive:
+point:
 commandNames: [ hardcore ]
 commands:
   hardcore: [ hardcore, hardcoremode ]
-on: false
+enable: false

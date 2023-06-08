@@ -2,7 +2,9 @@ package com.eofitg.hardcore;
 
 import com.eofitg.hardcore.cmdoperation.CommandRegister;
 import com.eofitg.hardcore.cmdoperation.TabCompleter;
+import com.eofitg.hardcore.cmdoperation.TabCompleterRegister;
 import com.eofitg.hardcore.listener.PlayerListener;
+import com.eofitg.hardcore.listener.PointListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -28,9 +30,9 @@ public final class Hardcore extends JavaPlugin {
         instance = this;
         pluginName = instance.getName();
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
-        //CommandRegister.register(ConfigReader.getCmdNames());
-        Objects.requireNonNull(Bukkit.getPluginCommand("hardcore")).setExecutor(new TabCompleter());
-        Objects.requireNonNull(Bukkit.getPluginCommand("hardcore")).setTabCompleter(new TabCompleter());
+        // Bukkit.getPluginManager().registerEvents(new PointListener(), this);
+        CommandRegister.register(ConfigReader.getCmdNames());
+        TabCompleterRegister.register(ConfigReader.getCmdNames());
 
         // 扫描所有在线玩家加入到玩家列表
         if (ConfigReader.getState()) {

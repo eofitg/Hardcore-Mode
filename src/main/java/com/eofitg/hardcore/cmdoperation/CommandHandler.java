@@ -29,13 +29,13 @@ public class CommandHandler implements CommandExecutor {
                     break;
                 }
                 case "on" : {
-                    ConfigReader.set("on", true);
+                    ConfigReader.set("enable", true);
                     Hardcore.getInstance().saveConfig();
                     sender.sendMessage(ChatColor.BLUE + "Hardcore mode is on.");
                     break;
                 }
                 case "off" : {
-                    ConfigReader.set("on", false);
+                    ConfigReader.set("enable", false);
                     Hardcore.getInstance().saveConfig();
                     sender.sendMessage(ChatColor.BLUE + "Hardcore mode is off.");
                     break;
