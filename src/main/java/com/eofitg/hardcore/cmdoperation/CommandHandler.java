@@ -43,7 +43,7 @@ public class CommandHandler implements CommandExecutor {
                 case "reset" : {
                     ConfigReader.reset();
                     Hardcore.getInstance().saveConfig();
-                    sender.sendMessage("Player state has reset.");
+                    sender.sendMessage(ChatColor.BLUE + "Player state has reset.");
                     break;
                 }
             }
