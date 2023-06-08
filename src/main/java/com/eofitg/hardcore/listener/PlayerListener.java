@@ -29,6 +29,7 @@ public class PlayerListener implements Listener {
             playerNames.add(playerName);
             ConfigReader.set("playerNames", playerNames);
             ConfigReader.set("alive." + playerName, true);
+            ConfigReader.set("point." + playerName, 0);
             Hardcore.getInstance().saveConfig();
             player.setGameMode(GameMode.SURVIVAL);
             player.sendTitle(ChatColor.BLUE + "WELCOME, NEW PLAYER!", ChatColor.GRAY + "You only have one life and do your best to survive!", 10, 150, 10);
