@@ -1,8 +1,3 @@
-/*
- Deprecated.
- Go to check TabCompleter.java
- */
-
 package com.eofitg.hardcore.cmdoperation;
 
 import com.eofitg.hardcore.ConfigReader;
@@ -34,13 +29,13 @@ public class CommandHandler implements CommandExecutor {
                     break;
                 }
                 case "on" : {
-                    ConfigReader.set("on", true);
+                    ConfigReader.set("enable", true);
                     Hardcore.getInstance().saveConfig();
                     sender.sendMessage("Hardcore mode is on.");
                     break;
                 }
                 case "off" : {
-                    ConfigReader.set("on", false);
+                    ConfigReader.set("enable", false);
                     Hardcore.getInstance().saveConfig();
                     sender.sendMessage("Hardcore mode is off.");
                     break;
@@ -48,7 +43,7 @@ public class CommandHandler implements CommandExecutor {
                 case "reset" : {
                     ConfigReader.reset();
                     Hardcore.getInstance().saveConfig();
-                    sender.sendMessage("Player state has reset.");
+                    sender.sendMessage(ChatColor.BLUE + "Player state has reset.");
                     break;
                 }
             }
