@@ -1,8 +1,3 @@
-/*
- Deprecated.
- Go to check TabCompleter.java
- */
-
 package com.eofitg.hardcore.cmdoperation;
 
 import com.eofitg.hardcore.ConfigReader;
