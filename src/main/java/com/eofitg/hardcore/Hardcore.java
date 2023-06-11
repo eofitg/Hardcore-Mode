@@ -21,6 +21,9 @@ public final class Hardcore extends JavaPlugin {
     public static String getPluginName() {
         return pluginName;
     }
+    public static String message(String name) {
+        return ConfigReader.getMessage().getString(name);
+    }
 
     @Override
     public void onEnable() {
@@ -43,15 +46,15 @@ public final class Hardcore extends JavaPlugin {
                     ConfigReader.set("alive." + playerName, true);
                     Hardcore.getInstance().saveConfig();
                     player.setGameMode(GameMode.SURVIVAL);
-                    player.sendTitle(ChatColor.BLUE + "WELCOME, NEW PLAYER!", ChatColor.GRAY + "You only have one life and do your best to survive!", 10, 150, 10);
+                    player.sendTitle(ChatColor.BLUE + message("welcome"), ChatColor.GRAY + message("welcomeSub"), 10, 150, 10);
                 } else {
                     boolean playerState = ConfigReader.getPlayerState(playerName);
                     if (!playerState) {
                         player.setGameMode(GameMode.SPECTATOR);
-                        player.sendTitle(ChatColor.RED + "YOU HAVE DIED IN THIS SEASON!", ChatColor.GRAY + "Please wait for the reset!", 10, 150, 10);
+                        player.sendTitle(ChatColor.RED + message("dead"), ChatColor.GRAY + message("deadSub"), 10, 150, 10);
                     } else {
                         player.setGameMode(GameMode.SURVIVAL);
-                        player.sendTitle(ChatColor.GREEN + "YOU ARE ALIVE!", ChatColor.GRAY + "Survive and earn more points!", 10, 150, 10);
+                        player.sendTitle(ChatColor.GREEN + message("alive"), ChatColor.GRAY + message("aliveSub"), 10, 150, 10);
                     }
                 }
             }

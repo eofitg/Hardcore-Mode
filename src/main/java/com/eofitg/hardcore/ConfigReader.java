@@ -1,20 +1,32 @@
 package com.eofitg.hardcore;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
 import java.util.List;
 
 public class ConfigReader {
+    private static File languageFile = new File(Hardcore.getInstance().getDataFolder() + "language/", ConfigReader.getLanguage() + ".yml");
+    private static YamlConfiguration messages = YamlConfiguration.loadConfiguration(languageFile);
     private static FileConfiguration config = Hardcore.getInstance().getConfig();
     private static List<String> playerNames = config.getStringList("playerNames");
     private static List<String> cmdNames = config.getStringList("commandNames");
-    private static String language = config.getString("language");
     private static boolean state = config.getBoolean("enable");
+    private static String language = "en";
     public static List<String> getPlayerNames() {
         return playerNames;
     }
-    public statis String getLanguage() {
-        return config.language;
+    public static String getLanguage() {
+        language = config.getString("language");
+        if (language != null) {
+            return language;
+        } else {
+            return "en";
+        }
+    }
+    public static YamlConfiguration getMessage() {
+        return messages;
     }
     public static boolean getPlayerState(String name) {
         return config.getBoolean("alive." + name);
