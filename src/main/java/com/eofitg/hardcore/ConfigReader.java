@@ -8,9 +8,13 @@ public class ConfigReader {
     private static FileConfiguration config = Hardcore.getInstance().getConfig();
     private static List<String> playerNames = config.getStringList("playerNames");
     private static List<String> cmdNames = config.getStringList("commandNames");
+    private static String language = config.getString("language");
     private static boolean state = config.getBoolean("enable");
     public static List<String> getPlayerNames() {
         return playerNames;
+    }
+    public statis String getLanguage() {
+        return config.language;
     }
     public static boolean getPlayerState(String name) {
         return config.getBoolean("alive." + name);
