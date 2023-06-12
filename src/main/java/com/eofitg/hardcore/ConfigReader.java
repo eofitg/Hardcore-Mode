@@ -46,4 +46,7 @@ public class ConfigReader {
             reset(s);
         }
     }
+    public static void reloadConfig() {
+        config = Hardcore.getInstance().getConfig();
+    }
 }

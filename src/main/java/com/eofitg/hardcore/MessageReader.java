@@ -1,5 +1,6 @@
 package com.eofitg.hardcore;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -13,10 +14,18 @@ public class MessageReader {
             Hardcore.getInstance().saveResource("language.yml", false);
         }
     }
-    public static ConfigurationSection getMessages() {
-        if (messages == null) {
-            messages = YamlConfiguration.loadConfiguration(languageFile);
-        }
+    private static ConfigurationSection getMessages() {
         return messages.getConfigurationSection("messages." + ConfigReader.getLanguage());
+    }
+    public static String message(String name) {
+        String msg = MessageReader.getMessages().getString(name);
+        if (msg == null) {
+            if (ConfigReader.getLanguage() == "zh_CN") {
+                return "没有找到语言文件!";
+            } else {
+                return "No language file found!";
+            }
+        }
+        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 }

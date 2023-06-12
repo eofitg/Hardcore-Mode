@@ -7,7 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import static com.eofitg.hardcore.Hardcore.message;
+import static com.eofitg.hardcore.MessageReader.message;
 
 public class CommandHandler implements CommandExecutor {
     @Override

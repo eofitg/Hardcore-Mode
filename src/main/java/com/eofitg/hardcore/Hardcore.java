@@ -10,8 +10,9 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.util.List;
+
+import static com.eofitg.hardcore.MessageReader.message;
 
 public final class Hardcore extends JavaPlugin {
     private static Hardcore instance;
@@ -21,17 +22,6 @@ public final class Hardcore extends JavaPlugin {
     }
     public static String getPluginName() {
         return pluginName;
-    }
-    public static String message(String name) {
-        String msg = MessageReader.getMessages().getString(name);
-        if (msg == null) {
-            if (ConfigReader.getLanguage() == "zh_CN") {
-                return "没有找到语言文件!";
-            } else {
-                return "No language file found!";
-            }
-        }
-        return ChatColor.translateAlternateColorCodes('&', msg);
     }
     @Override
     public void onEnable() {
