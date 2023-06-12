@@ -26,7 +26,7 @@ public class ConfigReader {
         return state;
     }
     public static double getPoint(String name) {
-        return config.getInt("point." + name);
+        return config.getDouble("point." + name);
     }
 
     public static void set(String key, Object value) {
