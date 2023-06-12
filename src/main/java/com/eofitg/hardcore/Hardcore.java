@@ -25,7 +25,7 @@ public final class Hardcore extends JavaPlugin {
     public static String message(String name) {
         String msg = MessageReader.getMessages().getString(name);
         if (msg == null) {
-            if (ConfigReader.getLanguage() == "zh") {
+            if (ConfigReader.getLanguage() == "zh_CN") {
                 return "没有找到语言文件!";
             } else {
                 return "No language file found!";
