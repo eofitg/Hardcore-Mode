@@ -10,6 +10,7 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.List;
 
 public final class Hardcore extends JavaPlugin {
@@ -22,14 +23,23 @@ public final class Hardcore extends JavaPlugin {
         return pluginName;
     }
     public static String message(String name) {
-        return ConfigReader.getMessage().getString(name);
+        String msg = MessageReader.getMessages().getString(name);
+        if (msg == null) {
+            if (ConfigReader.getLanguage() == "zh") {
+                return "没有找到语言文件!";
+            } else {
+                return "No language file found!";
+            }
+        }
+        return ChatColor.translateAlternateColorCodes('&', msg);
     }
-
     @Override
     public void onEnable() {
         // Plugin startup logic
         instance = this;
         pluginName = instance.getName();
+        saveDefaultConfig();
+        MessageReader.saveLanguageFiles();
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new PointListener(), this);
         CommandRegister.register(ConfigReader.getCmdNames());

@@ -24,7 +24,7 @@ public class CommandHandler implements CommandExecutor {
             String childCmd = args[0].toLowerCase();
             switch (childCmd) {
                 case "help" : {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message("help")));
+                    sender.sendMessage(message("help"));
                     break;
                 }
                 case "on" : {

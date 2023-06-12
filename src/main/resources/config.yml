@@ -5,4 +5,4 @@ commandNames: [ hardcore ]
 commands:
   hardcore: [ hardcore, hardcoremode ]
 enable: false
-language: "en"
+language: "zh.yml"
