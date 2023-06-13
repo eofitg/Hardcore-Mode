@@ -2,17 +2,16 @@ package com.eofitg.hardcore;
 
 import com.eofitg.hardcore.cmdoperation.CommandRegister;
 import com.eofitg.hardcore.cmdoperation.TabCompleterRegister;
+import com.eofitg.hardcore.configuration.DefaultConfig;
 import com.eofitg.hardcore.listener.PlayerListener;
 import com.eofitg.hardcore.listener.PointListener;
 import com.eofitg.hardcore.util.Leaderboard;
-import com.eofitg.hardcore.util.TestScordboard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,28 +35,29 @@ public final class Hardcore extends JavaPlugin {
         // Plugin startup logic
         instance = this;
         pluginName = instance.getName();
+        saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new PointListener(), this);
-        CommandRegister.register(ConfigReader.getCmdNames());
-        TabCompleterRegister.register(ConfigReader.getCmdNames());
+        CommandRegister.register(DefaultConfig.getCmdNames());
+        TabCompleterRegister.register(DefaultConfig.getCmdNames());
 
         // Add all online players to the player list then toggle their game-mode
-        if (ConfigReader.getState()) {
+        if (DefaultConfig.getState()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 String playerName = player.getName();
-                List<String> playerNames = ConfigReader.getPlayerNames();
+                List<String> playerNames = DefaultConfig.getPlayerNames();
                 if (!playerNames.contains(playerName)) {
                     // new player
                     playerNames.add(playerName);
-                    ConfigReader.setPlayerNames(playerNames);
-                    ConfigReader.setPlayerState(playerName, true);
-                    Hardcore.getInstance().saveConfig();
+                    DefaultConfig.setPlayerNames(playerNames);
+                    DefaultConfig.setPlayerState(playerName, true);
+                    DefaultConfig.save();
                     playerGameModeMap.put(player, player.getGameMode());
                     player.setGameMode(GameMode.SURVIVAL);
                     player.sendTitle(ChatColor.BLUE + "WELCOME, NEW PLAYER!", ChatColor.GRAY + "You only have one life and do your best to survive!", 10, 150, 10);
                 } else {
                     // existing player
-                    boolean playerState = ConfigReader.getPlayerState(playerName);
+                    boolean playerState = DefaultConfig.getPlayerState(playerName);
                     playerGameModeMap.put(player, player.getGameMode());
                     if (!playerState) {
                         // player has dead
@@ -83,14 +83,14 @@ public final class Hardcore extends JavaPlugin {
         // Plugin shutdown logic
         instance = null;
         pluginName = null;
-        if (!ConfigReader.getState()) {
+        if (!DefaultConfig.getState()) {
             return;
         }
 
         // Restore players' game-mode to their original state
         for (Player player : Bukkit.getOnlinePlayers()) {
             String playerName = player.getName();
-            List<String> playerNames = ConfigReader.getPlayerNames();
+            List<String> playerNames = DefaultConfig.getPlayerNames();
             if (playerNames.contains(playerName) && playerGameModeMap.containsKey(player)) {
                 player.setGameMode(playerGameModeMap.get(player));
             }

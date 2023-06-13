@@ -1,6 +1,3 @@
-playerNames:
-alive:
-point:
 commandNames: [ hardcore ]
 commands:
   hardcore: [ hardcore, hardcoremode ]

@@ -1,6 +1,6 @@
 package com.eofitg.hardcore.util;
 
-import com.eofitg.hardcore.ConfigReader;
+import com.eofitg.hardcore.configuration.DefaultConfig;
 import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -70,11 +70,11 @@ public class Leaderboard {
 
             Map<String, Boolean> playerState = new HashMap<>();
             Map<String, Double> playerPoint = new HashMap<>();
-            List<String> playerNames = ConfigReader.getPlayerNames();
+            List<String> playerNames = DefaultConfig.getPlayerNames();
             for (int i = 0; i < playerNames.size() && i < N; i++) {
                 String name = playerNames.get(i);
-                playerState.put(name, ConfigReader.getPlayerState(name));
-                playerPoint.put(name, ConfigReader.getPoint(name));
+                playerState.put(name, DefaultConfig.getPlayerState(name));
+                playerPoint.put(name, DefaultConfig.getPoint(name));
             }
             // sort playerPoint by point
             List<Map.Entry<String, Double>> pointRanking = new LinkedList<>(playerPoint.entrySet());
@@ -105,7 +105,7 @@ public class Leaderboard {
                 }
                 // i < text.size() && j < pointRanking.size() -> pointRanking.size() < i < text.size()
                 row.setPrefix(ChatColor.GREEN + "#" + i + ": ");
-                row.setSuffix(ChatColor.DARK_GRAY + "***" + ChatColor.WHITE + " - " + ChatColor.DARK_GRAY + "***");
+                row.setSuffix(ChatColor.DARK_GRAY + "****" + ChatColor.WHITE + " - " + ChatColor.DARK_GRAY + "****");
             }
 
         }, 0L, 20L);

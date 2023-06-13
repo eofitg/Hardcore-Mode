@@ -1,10 +1,11 @@
-package com.eofitg.hardcore;
+package com.eofitg.hardcore.configuration;
 
+import com.eofitg.hardcore.Hardcore;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
 
-public class ConfigReader {
+public class DefaultConfig {
     private static FileConfiguration config = Hardcore.getInstance().getConfig();
     private static List<String> playerNames = config.getStringList("playerNames");
     private static List<String> cmdNames = config.getStringList("commandNames");
@@ -55,5 +56,8 @@ public class ConfigReader {
         for (String s : playerNames) {
             reset(s);
         }
+    }
+    public static void save() {
+        Hardcore.getInstance().saveConfig();
     }
 }
