@@ -3,7 +3,6 @@ package com.eofitg.hardcore.listener;
 import com.eofitg.hardcore.ConfigReader;
 import com.eofitg.hardcore.Hardcore;
 import com.eofitg.hardcore.util.Leaderboard;
-import com.eofitg.hardcore.util.TestScordboard;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -19,24 +18,25 @@ import java.util.List;
 
 import static com.eofitg.hardcore.Hardcore.leaderboards;
 
-public class PlayerListener implements Listener {
-    private final boolean state = ConfigReader.getState();
+public class PlayerListener extends AbstractListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        if (!state) {
-            return;
-        }
-
         Player player = e.getPlayer();
         String playerName = e.getPlayer().getName();
         List<String> playerNames = ConfigReader.getPlayerNames();
-        Hardcore.playerGameModeMap.put(player, player.getGameMode());
+        if (!state) {
+            if (playerNames.contains(playerName) && Hardcore.playerGameModeMap.containsKey(player)) {
+                player.setGameMode(Hardcore.playerGameModeMap.get(player));
+            }
+            return;
+        }
         if (!playerNames.contains(playerName)) {
             // Request memory space for the new player
             playerNames.add(playerName);
             ConfigReader.setPlayerNames(playerNames);
             ConfigReader.setPlayerState(playerName, true);
             ConfigReader.setPoint(playerName, 0);
+            Hardcore.playerGameModeMap.put(player, player.getGameMode());
             Hardcore.getInstance().saveConfig();
             player.setGameMode(GameMode.SURVIVAL);
             player.sendTitle(ChatColor.BLUE + "WELCOME, NEW PLAYER!", ChatColor.GRAY + "You only have one life and do your best to survive!", 10, 150, 10);
@@ -46,6 +46,7 @@ public class PlayerListener implements Listener {
                 player.setGameMode(GameMode.SPECTATOR);
                 player.sendTitle(ChatColor.RED + "YOU ARE DIED!", ChatColor.GRAY + "Please wait for the reset!", 10, 150, 10);
             } else {
+                Hardcore.playerGameModeMap.put(player, player.getGameMode());
                 player.setGameMode(GameMode.SURVIVAL);
                 player.sendTitle(ChatColor.GREEN + "YOU ARE ALIVE!", ChatColor.GRAY + "Survive and earn more points!", 10, 150, 10);
             }
@@ -62,12 +63,10 @@ public class PlayerListener implements Listener {
     }
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        if (!state) {
-            return;
-        }
         Player player = e.getPlayer();
         if (leaderboards.containsKey(player)) {
             leaderboards.get(player).turnOff();
+            leaderboards.remove(player);
         }
     }
     @EventHandler

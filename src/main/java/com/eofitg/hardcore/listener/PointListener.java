@@ -11,8 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public class PointListener implements Listener {
-    private final boolean state = ConfigReader.getState();
+public class PointListener extends AbstractListener implements Listener {
     @EventHandler
     public void getDamage(EntityDamageEvent e) {
         if(!state) {
@@ -25,7 +24,6 @@ public class PointListener implements Listener {
             double heart = Math.round(((LivingEntity) e.getEntity()).getHealth() * 2) / 20.0;
             double damage = Math.min(heart, Math.round(e.getFinalDamage() * 2) / 20.0);
             double point = MathUtil.round_half_up(ConfigReader.getPoint(name) - damage, 2);
-            // Hardcore.getInstance().getLogger().info("" + point);
             ConfigReader.setPoint(name, point);
             Hardcore.getInstance().saveConfig();
         }
@@ -44,7 +42,6 @@ public class PointListener implements Listener {
                 double heart = Math.round(((LivingEntity) e.getEntity()).getHealth() * 2) / 20.0;
                 double damage = Math.min(heart, Math.round(e.getFinalDamage() * 2) / 20.0);
                 double point = MathUtil.round_half_up(ConfigReader.getPoint(name) + damage, 2);
-                // Hardcore.getInstance().getLogger().info("" + point);
                 ConfigReader.setPoint(name, point);
                 Hardcore.getInstance().saveConfig();
             }
