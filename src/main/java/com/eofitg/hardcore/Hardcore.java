@@ -26,7 +26,9 @@ public final class Hardcore extends JavaPlugin {
         return pluginName;
     }
 
+    // Store players' game-mode before the plugin turns on
     public static Map<Player, GameMode> playerGameModeMap = new HashMap<>();
+    // Store players' leaderboards displayed on their interfaces
     public static Map<Player, Leaderboard> leaderboards = new HashMap<>();
 
 
@@ -36,8 +38,10 @@ public final class Hardcore extends JavaPlugin {
         instance = this;
         pluginName = instance.getName();
         saveDefaultConfig();
+        // Register Listeners
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new PointListener(), this);
+        // Register Commands
         CommandRegister.register(DefaultConfig.getCmdNames());
         TabCompleterRegister.register(DefaultConfig.getCmdNames());
 
@@ -60,7 +64,7 @@ public final class Hardcore extends JavaPlugin {
                     boolean playerState = DefaultConfig.getPlayerState(playerName);
                     playerGameModeMap.put(player, player.getGameMode());
                     if (!playerState) {
-                        // player has dead
+                        // player is dead
                         player.setGameMode(GameMode.SPECTATOR);
                         player.sendTitle(ChatColor.RED + "YOU HAVE DIED IN THIS SEASON!", ChatColor.GRAY + "Please wait for the reset!", 10, 150, 10);
                     } else {
