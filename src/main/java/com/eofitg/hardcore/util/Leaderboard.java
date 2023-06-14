@@ -1,6 +1,6 @@
 package com.eofitg.hardcore.util;
 
-import com.eofitg.hardcore.configuration.DefaultConfig;
+import com.eofitg.hardcore.configuration.MainConfig;
 import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -70,11 +70,11 @@ public class Leaderboard {
 
             Map<String, Boolean> playerState = new HashMap<>();
             Map<String, Double> playerPoint = new HashMap<>();
-            List<String> playerNames = DefaultConfig.getPlayerNames();
+            List<String> playerNames = MainConfig.getPlayerNames();
             for (int i = 0; i < playerNames.size() && i < N; i++) {
                 String name = playerNames.get(i);
-                playerState.put(name, DefaultConfig.getPlayerState(name));
-                playerPoint.put(name, DefaultConfig.getPoint(name));
+                playerState.put(name, MainConfig.getPlayerState(name));
+                playerPoint.put(name, MainConfig.getPoint(name));
             }
             // sort playerPoint by point
             List<Map.Entry<String, Double>> pointRanking = new LinkedList<>(playerPoint.entrySet());

@@ -1,6 +1,6 @@
 package com.eofitg.hardcore.cmdoperation;
 
-import com.eofitg.hardcore.configuration.DefaultConfig;
+import com.eofitg.hardcore.configuration.MainConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,20 +28,20 @@ public class CommandHandler implements CommandExecutor {
                     break;
                 }
                 case "on" : {
-                    DefaultConfig.setState(true);
-                    DefaultConfig.save();
+                    MainConfig.setState(true);
+                    MainConfig.save();
                     sender.sendMessage(ChatColor.BLUE + "Hardcore mode is on.");
                     break;
                 }
                 case "off" : {
-                    DefaultConfig.setState(false);
-                    DefaultConfig.save();
+                    MainConfig.setState(false);
+                    MainConfig.save();
                     sender.sendMessage(ChatColor.BLUE + "Hardcore mode is off.");
                     break;
                 }
                 case "reset" : {
-                    DefaultConfig.reset();
-                    DefaultConfig.save();
+                    MainConfig.reset();
+                    MainConfig.save();
                     sender.sendMessage(ChatColor.BLUE + "Player state has reset.");
                     break;
                 }

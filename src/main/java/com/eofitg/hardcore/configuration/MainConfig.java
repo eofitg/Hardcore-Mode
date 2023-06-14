@@ -5,7 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
 
-public class DefaultConfig {
+public class MainConfig {
     private static FileConfiguration config = Hardcore.getInstance().getConfig();
     private static List<String> playerNames = config.getStringList("playerNames");
     private static List<String> cmdNames = config.getStringList("commandNames");
@@ -59,5 +59,8 @@ public class DefaultConfig {
     }
     public static void save() {
         Hardcore.getInstance().saveConfig();
+    }
+    public static void saveDefault() {
+        Hardcore.getInstance().saveDefaultConfig();
     }
 }
