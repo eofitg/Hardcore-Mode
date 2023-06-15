@@ -32,20 +32,21 @@ public class PlayerListener extends AbstractListener implements Listener {
             }
             return;
         }
+
         if (!playerNames.contains(playerName)) {
-            // Request memory space for the new player
+            // New player
             playerNames.add(playerName);
-            //
             MainConfig.setPlayerNames(playerNames);
             MainConfig.save();
-            //
+            // Create user data config for the new player
             UserDataConfig userDataConfig = new UserDataConfig(player);
             userDataConfig.init();
             userDataConfig.save();
-
+            // Change his/her game-mode and start
             player.setGameMode(GameMode.SURVIVAL);
             player.sendTitle(ChatColor.BLUE + "WELCOME, NEW PLAYER!", ChatColor.GRAY + "You only have one life and do your best to survive!", 10, 150, 10);
         } else {
+            // Existing player
             boolean playerState = new UserDataConfig(player).getState();
             if (!playerState) {
                 player.setGameMode(GameMode.SPECTATOR);
@@ -64,6 +65,7 @@ public class PlayerListener extends AbstractListener implements Listener {
             leaderboards.put(player, leaderboard);
             leaderboard.startShowing();
         }
+
     }
 
     @EventHandler

@@ -7,10 +7,10 @@ import java.util.List;
 
 public class MainConfig {
 
-    private static FileConfiguration config = Hardcore.getInstance().getConfig();
-    private static List<String> playerNames = config.getStringList("playerNames");
-    private static List<String> cmdNames = config.getStringList("commandNames");
-    private static boolean state = config.getBoolean("enable");
+    private static final FileConfiguration config = Hardcore.getInstance().getConfig();
+    private static final List<String> playerNames = config.getStringList("playerNames");
+    private static final List<String> cmdNames = config.getStringList("commandNames");
+    private static final boolean state = config.getBoolean("enable");
 
     public static List<String> getPlayerNames() {
         return playerNames;
@@ -31,14 +31,8 @@ public class MainConfig {
     public static void setPlayerNames(List<String> names) {
         set("playerNames", names);
     }
-    public static void setPlayerState(String name, boolean state) {
-        set("alive." + name, state);
-    }
     public static void setState(boolean state) {
         set("enable", state);
-    }
-    public static void setPoint(String name, double point) {
-        set("point." + name, point);
     }
 
     public static void reset(String name) {

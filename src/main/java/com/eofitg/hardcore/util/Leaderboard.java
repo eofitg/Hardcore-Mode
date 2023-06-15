@@ -46,6 +46,7 @@ public class Leaderboard {
         if (isRun) {
             return;
         }
+        // Make sure this player's scoreboard is valid
         if (player == null || !player.isOnline()) {
             return;
         }
@@ -88,13 +89,15 @@ public class Leaderboard {
 
             for (int i = 0, j = 0; i < text.size(); i++) {
                 Team row = text.get(i); // Get every Team
-                if (i == 0) { // Date & Time HUD
+                if (i == 0) {
+                    // Date & Time HUD
                     Date date = new Date();
                     row.setPrefix(ChatColor.GRAY + format.format(date));
                     row.setSuffix(ChatColor.GRAY + " " + format2.format(date) + s);
                     continue;
                 }
                 if (j < pointRanking.size()) {
+                    // Fill in the players' data on the leaderboard
                     String name = pointRanking.get(j).getKey();
                     double points = pointRanking.get(j).getValue();
                     String suffix = ChatColor.GOLD + name + ChatColor.WHITE + " - " + ChatColor.GOLD + points;
@@ -108,7 +111,7 @@ public class Leaderboard {
                     j++;
                     continue;
                 }
-                // i < text.size() && j < pointRanking.size() -> pointRanking.size() < i < text.size()
+                // i < text.size() && j < pointRanking.size() -> pointRanking.size() < i < text.size() , mean last rows have no last players to fill
                 row.setPrefix(ChatColor.GREEN + "#" + i + ": ");
                 row.setSuffix(ChatColor.DARK_GRAY + "****" + ChatColor.WHITE + " - " + ChatColor.DARK_GRAY + "****");
             }

@@ -14,7 +14,7 @@ public class PointListener extends AbstractListener implements Listener {
 
     @EventHandler
     public void getDamage(EntityDamageEvent e) {
-        if(!state) {
+        if(!state) { // Plugin is off
             return;
         }
         if (e.getEntity() instanceof Player) {
@@ -32,11 +32,12 @@ public class PointListener extends AbstractListener implements Listener {
 
     @EventHandler
     public void causeDamage(EntityDamageByEntityEvent e) {
-        if(!state) {
+        if(!state) { // Plugin is off
             return;
         }
         if (e.getDamager() instanceof Player) {
             if (e.getEntity() instanceof LivingEntity) {
+                // Why Mojang made ARMOR_STAND a damageable entity???
                 if (e.getEntityType() == EntityType.ARMOR_STAND) return;
 
                 UserDataConfig userDataConfig = new UserDataConfig(((Player) e.getDamager()).getPlayer());

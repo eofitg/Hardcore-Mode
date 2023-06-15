@@ -28,8 +28,6 @@ public final class Hardcore extends JavaPlugin {
         return pluginName;
     }
 
-    // Store players' game-mode before the plugin turns on
-    public static Map<Player, GameMode> playerGameModeMap = new HashMap<>();
     // Store players' leaderboards displayed on their interfaces
     public static Map<Player, Leaderboard> leaderboards = new HashMap<>();
 
@@ -108,4 +106,5 @@ public final class Hardcore extends JavaPlugin {
         instance = null;
         pluginName = null;
     }
+
 }
