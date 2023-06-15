@@ -73,10 +73,11 @@ public class Leaderboard {
 
             Map<String, Boolean> playerState = new HashMap<>();
             Map<String, Double> playerPoint = new HashMap<>();
-            List<String> playerNames = MainConfig.getPlayerNames();
-            for (int i = 0; i < playerNames.size() && i < N; i++) {
-                String name = playerNames.get(i);
-                UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(name).getPlayer(), name);
+            List<String> playerIdList = MainConfig.getPlayerIdList();
+            for (int i = 0; i < playerIdList.size() && i < N; i++) {
+                String uuid = playerIdList.get(i).split("/")[0];
+                String name = playerIdList.get(i).split("/")[1];
+                UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(name).getPlayer(), uuid, name);
                 playerState.put(name, userDataConfig.getState());
                 playerPoint.put(name, userDataConfig.getPoint());
             }

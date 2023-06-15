@@ -13,9 +13,7 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class Hardcore extends JavaPlugin {
 
@@ -48,14 +46,20 @@ public final class Hardcore extends JavaPlugin {
         // Add all online players to the player list then toggle their game-mode
         if (MainConfig.getState()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                String playerName = player.getName();
-                List<String> playerNames = MainConfig.getPlayerNames();
+                // playerId = playerUuid + '/' + playerName
+                List<String> playerIdList = MainConfig.getPlayerIdList();
+                List<String> uuidList = MainConfig.getUuidList();
+                String uuid = player.getUniqueId().toString();
+                String playerId = uuid + "/" + player.getName();
+                // Create config file for this player
                 UserDataConfig userDataConfig;
-                userDataConfig = new UserDataConfig(player, playerName);
-                if (!playerNames.contains(playerName)) {
+                userDataConfig = new UserDataConfig(player, player.getUniqueId().toString(), player.getName());
+                if (!uuidList.contains(uuid)) {
                     // new player
-                    playerNames.add(playerName);
-                    MainConfig.setPlayerNames(playerNames);
+                    playerIdList.add(playerId);
+                    uuidList.add(uuid);
+                    MainConfig.setPlayerIdList(playerIdList);
+                    MainConfig.setUuidList(uuidList);
                     MainConfig.save();
                     //
                     userDataConfig.init();
@@ -65,6 +69,15 @@ public final class Hardcore extends JavaPlugin {
                     player.sendTitle(ChatColor.BLUE + "WELCOME, NEW PLAYER!", ChatColor.GRAY + "You only have one life and do your best to survive!", 10, 150, 10);
                 } else {
                     // existing player
+                    if(!playerIdList.contains(playerId)) {
+                        // Player name changed
+                        for(int i = 0; i < playerIdList.size(); i ++) {
+                            if(playerIdList.get(i).contains(uuid)) {
+                                // Update player id (uuid + '/' + name)
+                                playerIdList.set(i, playerId);
+                            }
+                        }
+                    }
                     boolean playerState = userDataConfig.getState();
                     if (!playerState) {
                         // player is dead
@@ -94,10 +107,22 @@ public final class Hardcore extends JavaPlugin {
 
         // Restore players' game-mode to their original state
         for (Player player : Bukkit.getOnlinePlayers()) {
-            String playerName = player.getName();
-            List<String> playerNames = MainConfig.getPlayerNames();
-            if (playerNames.contains(playerName) && new UserDataConfig(player, playerName).exists()) {
-                player.setGameMode(GameMode.valueOf(new UserDataConfig(player, playerName).getGameMode()));
+            List<String> playerIdList = MainConfig.getPlayerIdList();
+            List<String> uuidList = MainConfig.getUuidList();
+            String uuid = player.getUniqueId().toString();
+            String name = player.getName();
+            String playerId = uuid + "/" + name;
+            if (uuidList.contains(uuid) && new UserDataConfig(player, uuid, name).exists()) {
+                player.setGameMode(GameMode.valueOf(new UserDataConfig(player, uuid, name).getGameMode()));
+                if (!playerIdList.contains(playerId)) {
+                    // Player name changed
+                    for (int i = 0; i < playerIdList.size(); i++) {
+                        if (playerIdList.get(i).contains(uuid)) {
+                            // Update player id (uuid + '/' + name)
+                            playerIdList.set(i, playerId);
+                        }
+                    }
+                }
             }
             // Delete the leaderboard
             leaderboards.get(player).turnOff();

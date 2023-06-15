@@ -24,22 +24,36 @@ public class PlayerListener extends AbstractListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        String playerName = e.getPlayer().getName();
-        List<String> playerNames = MainConfig.getPlayerNames();
+        List<String> playerIdList = MainConfig.getPlayerIdList();
+        List<String> uuidList = MainConfig.getUuidList();
+        String uuid = player.getUniqueId().toString();
+        String name = player.getName();
+        String playerId = uuid + "/" + name;
         if (!state) {
-            if (playerNames.contains(playerName) && new UserDataConfig(player, playerName).exists()) {
-                player.setGameMode(GameMode.valueOf(new UserDataConfig(player, playerName).getGameMode()));
+            if (uuidList.contains(uuid) && new UserDataConfig(player, uuid, name).exists()) {
+                player.setGameMode(GameMode.valueOf(new UserDataConfig(player, uuid, name).getGameMode()));
+                if(!playerIdList.contains(playerId)) {
+                    // Player name changed
+                    for(int i = 0; i < playerIdList.size(); i ++) {
+                        if(playerIdList.get(i).contains(uuid)) {
+                            // Update player id (uuid + '/' + name)
+                            playerIdList.set(i, playerId);
+                        }
+                    }
+                }
             }
             return;
         }
 
-        if (!playerNames.contains(playerName)) {
+        if (!uuidList.contains(uuid)) {
             // New player
-            playerNames.add(playerName);
-            MainConfig.setPlayerNames(playerNames);
+            playerIdList.add(playerId);
+            uuidList.add(uuid);
+            MainConfig.setPlayerIdList(playerIdList);
+            MainConfig.setUuidList(uuidList);
             MainConfig.save();
             // Create user data config for the new player
-            UserDataConfig userDataConfig = new UserDataConfig(player, playerName);
+            UserDataConfig userDataConfig = new UserDataConfig(player, uuid, name);
             userDataConfig.init();
             userDataConfig.save();
             // Change his/her game-mode and start
@@ -47,11 +61,22 @@ public class PlayerListener extends AbstractListener implements Listener {
             player.sendTitle(ChatColor.BLUE + "WELCOME, NEW PLAYER!", ChatColor.GRAY + "You only have one life and do your best to survive!", 10, 150, 10);
         } else {
             // Existing player
-            boolean playerState = new UserDataConfig(player, playerName).getState();
+            if(!playerIdList.contains(playerId)) {
+                // Player name changed
+                for(int i = 0; i < playerIdList.size(); i ++) {
+                    if(playerIdList.get(i).contains(uuid)) {
+                        // Update player id (uuid + '/' + name)
+                        playerIdList.set(i, playerId);
+                    }
+                }
+            }
+            boolean playerState = new UserDataConfig(player, uuid, name).getState();
             if (!playerState) {
+                // player is dead
                 player.setGameMode(GameMode.SPECTATOR);
                 player.sendTitle(ChatColor.RED + "YOU ARE DIED!", ChatColor.GRAY + "Please wait for the reset!", 10, 150, 10);
             } else {
+                // player is alive
                 player.setGameMode(GameMode.SURVIVAL);
                 player.sendTitle(ChatColor.GREEN + "YOU ARE ALIVE!", ChatColor.GRAY + "Survive and earn more points!", 10, 150, 10);
             }
@@ -82,8 +107,9 @@ public class PlayerListener extends AbstractListener implements Listener {
         if (!state) {
             return;
         }
+
         // Write config
-        UserDataConfig userDataConfig = new UserDataConfig(e.getEntity(), e.getEntity().getName());
+        UserDataConfig userDataConfig = new UserDataConfig(e.getEntity(), e.getEntity().getUniqueId().toString(), e.getEntity().getName());
         userDataConfig.setState(false);
         userDataConfig.save();
 
@@ -103,7 +129,7 @@ public class PlayerListener extends AbstractListener implements Listener {
             return;
         }
         Player player = e.getPlayer();
-        boolean playerState = new UserDataConfig(player, player.getName()).getState();
+        boolean playerState = new UserDataConfig(player, player.getUniqueId().toString(), player.getName()).getState();
         if (!playerState) {
             player.setGameMode(GameMode.SPECTATOR);
             player.sendTitle(ChatColor.RED + "YOU HAVE DIED IN THIS SEASON!", ChatColor.GRAY + "Please wait for the reset!", 10, 150, 10);

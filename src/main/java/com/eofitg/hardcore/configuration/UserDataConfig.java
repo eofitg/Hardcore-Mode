@@ -10,19 +10,26 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 public class UserDataConfig {
 
     private final File configFile;
     private final FileConfiguration config;
     private final Player player;
+    private final String uuid;
+    private final String name;
+    private final String playerId;
     private final boolean exists;
-    private static final List<String> playerNames = MainConfig.getPlayerNames();
+    private static final List<String> playerIdList = MainConfig.getPlayerIdList();
 
-    public UserDataConfig(Player player, String name) {
-        this.configFile = new File(Hardcore.getInstance().getDataFolder() + "\\userdata", name + ".yml");
+    public UserDataConfig(Player player, String uuid, String name) {
+        this.configFile = new File(Hardcore.getInstance().getDataFolder() + "\\userdata", uuid + ".yml");
         this.config = new YamlConfiguration();
         this.player = player;
+        this.uuid = uuid;
+        this.name = name;
+        this.playerId = uuid + "/" + name;
         this.exists = configFile.exists();
         if(!exists) {
             this.configFile.getParentFile().mkdirs();
@@ -40,7 +47,7 @@ public class UserDataConfig {
     }
 
     public void init() {
-        setName(player.getName());
+        setName(name);
         setState(true);
         setPoint(0);
         setGameMode(player.getGameMode().toString());
@@ -56,7 +63,7 @@ public class UserDataConfig {
         return config.getDouble("point");
     }
     public String getGameMode() {
-        return config.getString("gamemode");
+        return config.getString("game-mode");
     }
     public void set(String key, Object value) {
         config.set(key, value);
@@ -71,18 +78,20 @@ public class UserDataConfig {
         set("point", point);
     }
     public void setGameMode(String gamemode) {
-        set("gamemode", gamemode);
+        set("game-mode", gamemode);
     }
 
     public void reset() {
-        if (playerNames.contains(player.getName())) {
+        if (playerIdList.contains(playerId)) {
             setState(true);
             setPoint(0);
         }
     }
-    public static void reset(String name) {
-        if (playerNames.contains(name)) {
-            UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(name).getPlayer(), name);
+    public static void reset(String playerId) {
+        if (playerIdList.contains(playerId)) {
+            String uuid = playerId.split("/")[0];
+            String name = playerId.split("/")[1];
+            UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(uuid).getPlayer(), uuid, name);
             if (userDataConfig.exists()) {
                 userDataConfig.setState(true);
                 userDataConfig.setPoint(0);
@@ -91,7 +100,7 @@ public class UserDataConfig {
         }
     }
     public static void reset_all() {
-        for (String s : playerNames) {
+        for (String s : playerIdList) {
             reset(s);
         }
     }
