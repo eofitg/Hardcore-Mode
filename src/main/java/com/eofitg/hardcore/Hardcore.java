@@ -37,7 +37,7 @@ public final class Hardcore extends JavaPlugin {
         // Plugin startup logic
         instance = this;
         pluginName = instance.getName();
-        saveDefaultConfig();
+        MainConfig.saveDefault();
         // Register Listeners
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new PointListener(), this);

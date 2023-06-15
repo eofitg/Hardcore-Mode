@@ -35,17 +35,6 @@ public class MainConfig {
         set("enable", state);
     }
 
-    public static void reset(String name) {
-        if (playerNames.contains(name)) {
-            set("alive." + name, true);
-            set("point." + name, 0);
-        }
-    }
-    public static void reset() {
-        for (String s : playerNames) {
-            reset(s);
-        }
-    }
     public static void save() {
         Hardcore.getInstance().saveConfig();
     }
