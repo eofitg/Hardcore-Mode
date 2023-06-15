@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 public class UserDataConfig {
 
@@ -22,6 +21,7 @@ public class UserDataConfig {
     private final String playerId;
     private final boolean exists;
     private static final List<String> playerIdList = MainConfig.getPlayerIdList();
+    private static final List<String> uuidList = MainConfig.getUuidList();
 
     public UserDataConfig(Player player, String uuid, String name) {
         this.configFile = new File(Hardcore.getInstance().getDataFolder() + "\\userdata", uuid + ".yml");
@@ -48,6 +48,7 @@ public class UserDataConfig {
 
     public void init() {
         setName(name);
+        setUuid(uuid);
         setState(true);
         setPoint(0);
         setGameMode(player.getGameMode().toString());
@@ -71,6 +72,9 @@ public class UserDataConfig {
     public void setName(String name) {
         set("name", name);
     }
+    public void setUuid(String uuid) {
+        set("uuid", uuid);
+    }
     public void setState(boolean state) {
         set("alive", state);
     }
@@ -82,15 +86,15 @@ public class UserDataConfig {
     }
 
     public void reset() {
-        if (playerIdList.contains(playerId)) {
+        if (uuidList.contains(uuid)) {
             setState(true);
             setPoint(0);
         }
     }
     public static void reset(String playerId) {
-        if (playerIdList.contains(playerId)) {
-            String uuid = playerId.split("/")[0];
-            String name = playerId.split("/")[1];
+        String uuid = playerId.split("/")[0];
+        String name = playerId.split("/")[1];
+        if (uuidList.contains(uuid)) {
             UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(uuid).getPlayer(), uuid, name);
             if (userDataConfig.exists()) {
                 userDataConfig.setState(true);

@@ -77,6 +77,8 @@ public final class Hardcore extends JavaPlugin {
                                 playerIdList.set(i, playerId);
                             }
                         }
+                        MainConfig.setPlayerIdList(playerIdList);
+                        MainConfig.save();
                     }
                     boolean playerState = userDataConfig.getState();
                     if (!playerState) {
@@ -122,6 +124,8 @@ public final class Hardcore extends JavaPlugin {
                             playerIdList.set(i, playerId);
                         }
                     }
+                    MainConfig.setPlayerIdList(playerIdList);
+                    MainConfig.save();
                 }
             }
             // Delete the leaderboard

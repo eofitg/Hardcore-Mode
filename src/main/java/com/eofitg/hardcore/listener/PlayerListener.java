@@ -40,6 +40,8 @@ public class PlayerListener extends AbstractListener implements Listener {
                             playerIdList.set(i, playerId);
                         }
                     }
+                    MainConfig.setPlayerIdList(playerIdList);
+                    MainConfig.save();
                 }
             }
             return;
@@ -69,6 +71,8 @@ public class PlayerListener extends AbstractListener implements Listener {
                         playerIdList.set(i, playerId);
                     }
                 }
+                MainConfig.setPlayerIdList(playerIdList);
+                MainConfig.save();
             }
             boolean playerState = new UserDataConfig(player, uuid, name).getState();
             if (!playerState) {
