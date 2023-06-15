@@ -1,12 +1,14 @@
 package com.eofitg.hardcore.cmdoperation;
 
 import com.eofitg.hardcore.configuration.MainConfig;
+import com.eofitg.hardcore.configuration.UserDataConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class CommandHandler implements CommandExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String args[]) {
         if (CommandChecker.conform(label, "hardcore")) {
@@ -40,8 +42,7 @@ public class CommandHandler implements CommandExecutor {
                     break;
                 }
                 case "reset" : {
-                    MainConfig.reset();
-                    MainConfig.save();
+                    UserDataConfig.reset_all();
                     sender.sendMessage(ChatColor.BLUE + "Player state has reset.");
                     break;
                 }
@@ -50,4 +51,5 @@ public class CommandHandler implements CommandExecutor {
         }
         return false;
     }
+
 }

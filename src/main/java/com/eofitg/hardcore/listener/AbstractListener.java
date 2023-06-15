@@ -5,7 +5,7 @@ import com.eofitg.hardcore.configuration.MainConfig;
 public class AbstractListener {
     protected static boolean state = MainConfig.getState();
 
-    protected void reload() {
+    protected static void reload() {
         state = MainConfig.getState();
     }
 

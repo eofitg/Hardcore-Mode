@@ -3,6 +3,7 @@ package com.eofitg.hardcore;
 import com.eofitg.hardcore.cmdoperation.CommandRegister;
 import com.eofitg.hardcore.cmdoperation.TabCompleterRegister;
 import com.eofitg.hardcore.configuration.MainConfig;
+import com.eofitg.hardcore.configuration.UserDataConfig;
 import com.eofitg.hardcore.listener.PlayerListener;
 import com.eofitg.hardcore.listener.PointListener;
 import com.eofitg.hardcore.util.Leaderboard;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public final class Hardcore extends JavaPlugin {
+
     private static Hardcore instance;
     private static String pluginName;
     public static Hardcore getInstance() {
@@ -37,7 +39,7 @@ public final class Hardcore extends JavaPlugin {
         // Plugin startup logic
         instance = this;
         pluginName = instance.getName();
-        MainConfig.saveDefault();
+        saveDefaultConfig();
         // Register Listeners
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new PointListener(), this);
@@ -50,19 +52,22 @@ public final class Hardcore extends JavaPlugin {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 String playerName = player.getName();
                 List<String> playerNames = MainConfig.getPlayerNames();
+                UserDataConfig userDataConfig;
+                userDataConfig = new UserDataConfig(player);
                 if (!playerNames.contains(playerName)) {
                     // new player
                     playerNames.add(playerName);
                     MainConfig.setPlayerNames(playerNames);
-                    MainConfig.setPlayerState(playerName, true);
                     MainConfig.save();
-                    playerGameModeMap.put(player, player.getGameMode());
+                    //
+                    userDataConfig.init();
+                    userDataConfig.save();
+                    //
                     player.setGameMode(GameMode.SURVIVAL);
                     player.sendTitle(ChatColor.BLUE + "WELCOME, NEW PLAYER!", ChatColor.GRAY + "You only have one life and do your best to survive!", 10, 150, 10);
                 } else {
                     // existing player
-                    boolean playerState = MainConfig.getPlayerState(playerName);
-                    playerGameModeMap.put(player, player.getGameMode());
+                    boolean playerState = userDataConfig.getState();
                     if (!playerState) {
                         // player is dead
                         player.setGameMode(GameMode.SPECTATOR);
@@ -85,8 +90,6 @@ public final class Hardcore extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        instance = null;
-        pluginName = null;
         if (!MainConfig.getState()) {
             return;
         }
@@ -95,13 +98,14 @@ public final class Hardcore extends JavaPlugin {
         for (Player player : Bukkit.getOnlinePlayers()) {
             String playerName = player.getName();
             List<String> playerNames = MainConfig.getPlayerNames();
-            if (playerNames.contains(playerName) && playerGameModeMap.containsKey(player)) {
-                player.setGameMode(playerGameModeMap.get(player));
+            if (playerNames.contains(playerName) && new UserDataConfig(player).exists()) {
+                player.setGameMode(GameMode.valueOf(new UserDataConfig(player).getGameMode()));
             }
-
             // Delete the leaderboard
             leaderboards.get(player).turnOff();
         }
         leaderboards.clear();
+        instance = null;
+        pluginName = null;
     }
 }

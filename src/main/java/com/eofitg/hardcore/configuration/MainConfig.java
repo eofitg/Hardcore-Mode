@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.List;
 
 public class MainConfig {
+
     private static FileConfiguration config = Hardcore.getInstance().getConfig();
     private static List<String> playerNames = config.getStringList("playerNames");
     private static List<String> cmdNames = config.getStringList("commandNames");
@@ -13,9 +14,6 @@ public class MainConfig {
 
     public static List<String> getPlayerNames() {
         return playerNames;
-    }
-    public static boolean getPlayerState(String name) {
-        return config.getBoolean("alive." + name);
     }
     public static List<String> getCmdNames() {
         return cmdNames;
@@ -25,9 +23,6 @@ public class MainConfig {
     }
     public static boolean getState() {
         return state;
-    }
-    public static double getPoint(String name) {
-        return config.getDouble("point." + name);
     }
 
     public static void set(String key, Object value) {
@@ -63,4 +58,5 @@ public class MainConfig {
     public static void saveDefault() {
         Hardcore.getInstance().saveDefaultConfig();
     }
+
 }

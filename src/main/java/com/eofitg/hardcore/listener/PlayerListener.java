@@ -2,6 +2,7 @@ package com.eofitg.hardcore.listener;
 
 import com.eofitg.hardcore.Hardcore;
 import com.eofitg.hardcore.configuration.MainConfig;
+import com.eofitg.hardcore.configuration.UserDataConfig;
 import com.eofitg.hardcore.util.Leaderboard;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -19,34 +20,37 @@ import java.util.List;
 import static com.eofitg.hardcore.Hardcore.leaderboards;
 
 public class PlayerListener extends AbstractListener implements Listener {
+
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         String playerName = e.getPlayer().getName();
         List<String> playerNames = MainConfig.getPlayerNames();
         if (!state) {
-            if (playerNames.contains(playerName) && Hardcore.playerGameModeMap.containsKey(player)) {
-                player.setGameMode(Hardcore.playerGameModeMap.get(player));
+            if (playerNames.contains(playerName) && new UserDataConfig(player).exists()) {
+                player.setGameMode(GameMode.valueOf(new UserDataConfig(player).getGameMode()));
             }
             return;
         }
         if (!playerNames.contains(playerName)) {
             // Request memory space for the new player
             playerNames.add(playerName);
+            //
             MainConfig.setPlayerNames(playerNames);
-            MainConfig.setPlayerState(playerName, true);
-            MainConfig.setPoint(playerName, 0);
-            Hardcore.playerGameModeMap.put(player, player.getGameMode());
             MainConfig.save();
+            //
+            UserDataConfig userDataConfig = new UserDataConfig(player);
+            userDataConfig.init();
+            userDataConfig.save();
+
             player.setGameMode(GameMode.SURVIVAL);
             player.sendTitle(ChatColor.BLUE + "WELCOME, NEW PLAYER!", ChatColor.GRAY + "You only have one life and do your best to survive!", 10, 150, 10);
         } else {
-            boolean playerState = MainConfig.getPlayerState(playerName);
+            boolean playerState = new UserDataConfig(player).getState();
             if (!playerState) {
                 player.setGameMode(GameMode.SPECTATOR);
                 player.sendTitle(ChatColor.RED + "YOU ARE DIED!", ChatColor.GRAY + "Please wait for the reset!", 10, 150, 10);
             } else {
-                Hardcore.playerGameModeMap.put(player, player.getGameMode());
                 player.setGameMode(GameMode.SURVIVAL);
                 player.sendTitle(ChatColor.GREEN + "YOU ARE ALIVE!", ChatColor.GRAY + "Survive and earn more points!", 10, 150, 10);
             }
@@ -61,6 +65,7 @@ public class PlayerListener extends AbstractListener implements Listener {
             leaderboard.startShowing();
         }
     }
+
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
@@ -69,15 +74,16 @@ public class PlayerListener extends AbstractListener implements Listener {
             leaderboards.remove(player);
         }
     }
+
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
         if (!state) {
             return;
         }
         // Write config
-        String playerName = e.getEntity().getPlayer().getName();
-        MainConfig.setPlayerState(playerName, false);
-        MainConfig.save();
+        UserDataConfig userDataConfig = new UserDataConfig(e.getEntity());
+        userDataConfig.setState(false);
+        userDataConfig.save();
 
         // Send player's location when dead
         Location location = e.getEntity().getLocation();
@@ -88,14 +94,14 @@ public class PlayerListener extends AbstractListener implements Listener {
         String location_ = ChatColor.GRAY + "[" + ChatColor.AQUA + x + y + z + ChatColor.GRAY + "] ";
         e.setDeathMessage(e.getDeathMessage() + " @" + location_ + ChatColor.WHITE + "in " + ChatColor.GREEN + world + ChatColor.RED + " RIP D: ");
     }
+
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
         if (!state) {
             return;
         }
         Player player = e.getPlayer();
-        String playerName = e.getPlayer().getName();
-        boolean playerState = MainConfig.getPlayerState(playerName);
+        boolean playerState = new UserDataConfig(player).getState();
         if (!playerState) {
             player.setGameMode(GameMode.SPECTATOR);
             player.sendTitle(ChatColor.RED + "YOU HAVE DIED IN THIS SEASON!", ChatColor.GRAY + "Please wait for the reset!", 10, 150, 10);
@@ -104,4 +110,5 @@ public class PlayerListener extends AbstractListener implements Listener {
             player.sendTitle(ChatColor.GREEN + "YOU ARE ALIVE!", ChatColor.GRAY + "Survive and earn more points!", 10, 150, 10);
         }
     }
+
 }

@@ -1,6 +1,7 @@
 package com.eofitg.hardcore.util;
 
 import com.eofitg.hardcore.configuration.MainConfig;
+import com.eofitg.hardcore.configuration.UserDataConfig;
 import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,31 +17,32 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Leaderboard {
-    private Plugin plugin;
-    private Scoreboard scoreboard;
-    private Objective objective;
-    private Player player;
+
+    private final Plugin plugin;
     private String title;
+    private final Scoreboard scoreboard;
+    private final Objective objective;
+    private final Player player;
     private boolean isRun;
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-    private SimpleDateFormat format2 = new SimpleDateFormat("HH:mm:ss");
-    private List<Team> text;         // All text in the leaderboard
+    private final SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+    private final SimpleDateFormat format2 = new SimpleDateFormat("HH:mm:ss");
+    private final List<Team> text;         // All text in the leaderboard
     private BukkitTask task;
 
     public Leaderboard(Plugin plugin, Player player, String title) {
-        this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        this.plugin = plugin;
         this.title = title;
+        this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         this.objective = scoreboard.registerNewObjective("LEADERBOARD", "dummy", ChatColor.DARK_BLUE + this.title);
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         this.player = player;
         this.isRun = false;
-        this.plugin = plugin;
         text = Lists.newArrayList();
     }
 
     public void startShowing() {
-        // 判断是否已经在运行
+        // Check out if this leaderboard is running
         if (isRun) {
             return;
         }
@@ -73,20 +75,23 @@ public class Leaderboard {
             List<String> playerNames = MainConfig.getPlayerNames();
             for (int i = 0; i < playerNames.size() && i < N; i++) {
                 String name = playerNames.get(i);
-                playerState.put(name, MainConfig.getPlayerState(name));
-                playerPoint.put(name, MainConfig.getPoint(name));
+                UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(name).getPlayer());
+                playerState.put(name, userDataConfig.getState());
+                playerPoint.put(name, userDataConfig.getPoint());
             }
             // sort playerPoint by point
             List<Map.Entry<String, Double>> pointRanking = new LinkedList<>(playerPoint.entrySet());
             // Collections.sort(pointRanking, Map.Entry.comparingByValue());
             Collections.sort(pointRanking, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
 
+            boolean s = MainConfig.getState();
+
             for (int i = 0, j = 0; i < text.size(); i++) {
-                Team row = text.get(i); // 获取每个Team
-                if (i == 0) { // Date&Time HUD
+                Team row = text.get(i); // Get every Team
+                if (i == 0) { // Date & Time HUD
                     Date date = new Date();
                     row.setPrefix(ChatColor.GRAY + format.format(date));
-                    row.setSuffix(ChatColor.GRAY + " " + format2.format(date));
+                    row.setSuffix(ChatColor.GRAY + " " + format2.format(date) + s);
                     continue;
                 }
                 if (j < pointRanking.size()) {
@@ -116,4 +121,5 @@ public class Leaderboard {
         task.cancel();
         player.setScoreboard(Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard());
     }
+
 }
