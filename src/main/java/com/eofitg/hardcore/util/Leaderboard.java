@@ -76,7 +76,7 @@ public class Leaderboard {
             List<String> playerNames = MainConfig.getPlayerNames();
             for (int i = 0; i < playerNames.size() && i < N; i++) {
                 String name = playerNames.get(i);
-                UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(name).getPlayer());
+                UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(name).getPlayer(), name);
                 playerState.put(name, userDataConfig.getState());
                 playerPoint.put(name, userDataConfig.getPoint());
             }

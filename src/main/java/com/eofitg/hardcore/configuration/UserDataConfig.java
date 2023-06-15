@@ -19,8 +19,8 @@ public class UserDataConfig {
     private final boolean exists;
     private static final List<String> playerNames = MainConfig.getPlayerNames();
 
-    public UserDataConfig(Player player) {
-        this.configFile = new File(Hardcore.getInstance().getDataFolder() + "\\userdata", player.getName() + ".yml");
+    public UserDataConfig(Player player, String name) {
+        this.configFile = new File(Hardcore.getInstance().getDataFolder() + "\\userdata", name + ".yml");
         this.config = new YamlConfiguration();
         this.player = player;
         this.exists = configFile.exists();
@@ -82,7 +82,7 @@ public class UserDataConfig {
     }
     public static void reset(String name) {
         if (playerNames.contains(name)) {
-            UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(name).getPlayer());
+            UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(name).getPlayer(), name);
             if (userDataConfig.exists()) {
                 userDataConfig.setState(true);
                 userDataConfig.setPoint(0);

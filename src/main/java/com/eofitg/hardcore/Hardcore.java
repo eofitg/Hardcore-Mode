@@ -51,7 +51,7 @@ public final class Hardcore extends JavaPlugin {
                 String playerName = player.getName();
                 List<String> playerNames = MainConfig.getPlayerNames();
                 UserDataConfig userDataConfig;
-                userDataConfig = new UserDataConfig(player);
+                userDataConfig = new UserDataConfig(player, playerName);
                 if (!playerNames.contains(playerName)) {
                     // new player
                     playerNames.add(playerName);
@@ -96,8 +96,8 @@ public final class Hardcore extends JavaPlugin {
         for (Player player : Bukkit.getOnlinePlayers()) {
             String playerName = player.getName();
             List<String> playerNames = MainConfig.getPlayerNames();
-            if (playerNames.contains(playerName) && new UserDataConfig(player).exists()) {
-                player.setGameMode(GameMode.valueOf(new UserDataConfig(player).getGameMode()));
+            if (playerNames.contains(playerName) && new UserDataConfig(player, playerName).exists()) {
+                player.setGameMode(GameMode.valueOf(new UserDataConfig(player, playerName).getGameMode()));
             }
             // Delete the leaderboard
             leaderboards.get(player).turnOff();

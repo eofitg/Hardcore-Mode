@@ -18,7 +18,7 @@ public class PointListener extends AbstractListener implements Listener {
             return;
         }
         if (e.getEntity() instanceof Player) {
-            UserDataConfig userDataConfig = new UserDataConfig(((Player) e.getEntity()).getPlayer());
+            UserDataConfig userDataConfig = new UserDataConfig(((Player) e.getEntity()).getPlayer(), e.getEntity().getName());
             if(!userDataConfig.getState()) return;
 
             double heart = Math.round(((LivingEntity) e.getEntity()).getHealth() * 2) / 20.0;
@@ -40,7 +40,7 @@ public class PointListener extends AbstractListener implements Listener {
                 // Why Mojang made ARMOR_STAND a damageable entity???
                 if (e.getEntityType() == EntityType.ARMOR_STAND) return;
 
-                UserDataConfig userDataConfig = new UserDataConfig(((Player) e.getDamager()).getPlayer());
+                UserDataConfig userDataConfig = new UserDataConfig(((Player) e.getDamager()).getPlayer(), e.getDamager().getName());
                 if(!userDataConfig.getState()) return;
 
                 double heart = Math.round(((LivingEntity) e.getEntity()).getHealth() * 2) / 20.0;

@@ -27,8 +27,8 @@ public class PlayerListener extends AbstractListener implements Listener {
         String playerName = e.getPlayer().getName();
         List<String> playerNames = MainConfig.getPlayerNames();
         if (!state) {
-            if (playerNames.contains(playerName) && new UserDataConfig(player).exists()) {
-                player.setGameMode(GameMode.valueOf(new UserDataConfig(player).getGameMode()));
+            if (playerNames.contains(playerName) && new UserDataConfig(player, playerName).exists()) {
+                player.setGameMode(GameMode.valueOf(new UserDataConfig(player, playerName).getGameMode()));
             }
             return;
         }
@@ -39,7 +39,7 @@ public class PlayerListener extends AbstractListener implements Listener {
             MainConfig.setPlayerNames(playerNames);
             MainConfig.save();
             // Create user data config for the new player
-            UserDataConfig userDataConfig = new UserDataConfig(player);
+            UserDataConfig userDataConfig = new UserDataConfig(player, playerName);
             userDataConfig.init();
             userDataConfig.save();
             // Change his/her game-mode and start
@@ -47,7 +47,7 @@ public class PlayerListener extends AbstractListener implements Listener {
             player.sendTitle(ChatColor.BLUE + "WELCOME, NEW PLAYER!", ChatColor.GRAY + "You only have one life and do your best to survive!", 10, 150, 10);
         } else {
             // Existing player
-            boolean playerState = new UserDataConfig(player).getState();
+            boolean playerState = new UserDataConfig(player, playerName).getState();
             if (!playerState) {
                 player.setGameMode(GameMode.SPECTATOR);
                 player.sendTitle(ChatColor.RED + "YOU ARE DIED!", ChatColor.GRAY + "Please wait for the reset!", 10, 150, 10);
@@ -83,7 +83,7 @@ public class PlayerListener extends AbstractListener implements Listener {
             return;
         }
         // Write config
-        UserDataConfig userDataConfig = new UserDataConfig(e.getEntity());
+        UserDataConfig userDataConfig = new UserDataConfig(e.getEntity(), e.getEntity().getName());
         userDataConfig.setState(false);
         userDataConfig.save();
 
@@ -103,7 +103,7 @@ public class PlayerListener extends AbstractListener implements Listener {
             return;
         }
         Player player = e.getPlayer();
-        boolean playerState = new UserDataConfig(player).getState();
+        boolean playerState = new UserDataConfig(player, player.getName()).getState();
         if (!playerState) {
             player.setGameMode(GameMode.SPECTATOR);
             player.sendTitle(ChatColor.RED + "YOU HAVE DIED IN THIS SEASON!", ChatColor.GRAY + "Please wait for the reset!", 10, 150, 10);
