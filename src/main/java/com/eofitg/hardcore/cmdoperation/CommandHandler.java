@@ -19,7 +19,8 @@ public class CommandHandler implements CommandExecutor {
                 return true;
             }
             if (args.length > 2) {
-                return false;
+                sender.sendMessage(ChatColor.RED + "Invalid command.");
+                return true;
             }
             if (args.length == 0) {
                 sender.sendMessage(ChatColor.RED + "Empty parameters.");
@@ -37,10 +38,13 @@ public class CommandHandler implements CommandExecutor {
                             UserDataConfig userDataConfig = new UserDataConfig(player, player.getUniqueId().toString(), playerName);
                             userDataConfig.reset();
                             userDataConfig.save();
-                            return true;
                         }
                     }
+                    sender.sendMessage(ChatColor.BLUE + "Player " + args[1] + "'s state has reset.");
+                } else {
+                    sender.sendMessage(ChatColor.RED + "Invalid command.");
                 }
+                return true;
             }
 
             switch (childCmd) {
