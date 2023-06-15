@@ -85,15 +85,13 @@ public class Leaderboard {
             // Collections.sort(pointRanking, Map.Entry.comparingByValue());
             Collections.sort(pointRanking, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
 
-            boolean s = MainConfig.getState();
-
             for (int i = 0, j = 0; i < text.size(); i++) {
                 Team row = text.get(i); // Get every Team
                 if (i == 0) {
                     // Date & Time HUD
                     Date date = new Date();
                     row.setPrefix(ChatColor.GRAY + format.format(date));
-                    row.setSuffix(ChatColor.GRAY + " " + format2.format(date) + s);
+                    row.setSuffix(ChatColor.GRAY + " " + format2.format(date));
                     continue;
                 }
                 if (j < pointRanking.size()) {
