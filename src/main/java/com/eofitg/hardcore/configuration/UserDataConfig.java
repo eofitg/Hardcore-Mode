@@ -85,13 +85,13 @@ public class UserDataConfig {
         set("game-mode", gamemode);
     }
 
-    public void reset() {
-        if (uuidList.contains(uuid)) {
+    public void reset() {           // Reset this.state
+        if(exists) {
             setState(true);
             setPoint(0);
         }
     }
-    public static void reset(String playerId) {
+    public static void reset(String playerId) {         // Try to reset a designated player's state
         String uuid = playerId.split("/")[0];
         String name = playerId.split("/")[1];
         if (uuidList.contains(uuid)) {
@@ -103,7 +103,7 @@ public class UserDataConfig {
             }
         }
     }
-    public static void reset_all() {
+    public static void reset_all() {                // Reset all players' state
         for (String s : playerIdList) {
             reset(s);
         }
