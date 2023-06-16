@@ -29,7 +29,6 @@ public final class Hardcore extends JavaPlugin {
     // Store players' leaderboards displayed on their interfaces
     public static Map<Player, Leaderboard> leaderboards = new HashMap<>();
 
-
     @Override
     public void onEnable() {
         // Plugin startup logic
