@@ -2,72 +2,56 @@ package com.eofitg.hardcore.configuration;
 
 import com.eofitg.hardcore.Hardcore;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-public class UserDataConfig {
+public class UserDataConfig extends AbstractConfig{
 
-    private final File configFile;
-    private final FileConfiguration config;
+    private static final List<String> playerIdList = MainConfig.getPlayerIdList();
+    private static final List<String> uuidList = MainConfig.getUuidList();
+    public static final String PARENT_PATH = Hardcore.getInstance().getDataFolder() + "\\userdata";
     private final Player player;
     private final String uuid;
     private final String name;
-    private final String playerId;
-    private final boolean exists;
-    private static final List<String> playerIdList = MainConfig.getPlayerIdList();
-    private static final List<String> uuidList = MainConfig.getUuidList();
 
     public UserDataConfig(Player player, String uuid, String name) {
-        this.configFile = new File(Hardcore.getInstance().getDataFolder() + "\\userdata", uuid + ".yml");
-        this.config = new YamlConfiguration();
+        super(PARENT_PATH, uuid + ".yml");
         this.player = player;
         this.uuid = uuid;
         this.name = name;
-        this.playerId = uuid + "/" + name;
-        this.exists = configFile.exists();
-        if(!exists) {
-            this.configFile.getParentFile().mkdirs();
-            try {
-                this.configFile.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        try {
-            this.config.load(configFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
     }
 
     public void init() {
-        setName(name);
-        setUuid(uuid);
+        setName(getPlayerName());
+        setUuid(getPlayerUuid());
         setState(true);
         setPoint(0);
-        setGameMode(player.getGameMode().toString());
+        setGameMode(getPlayer().getGameMode().toString());
     }
-    public boolean exists() {
-        return exists;
+
+    public Player getPlayer() {
+        return this.player;
+    }
+    public String getPlayerUuid() {
+        return this.uuid;
+    }
+    public String getPlayerName() {
+        return this.name;
     }
 
     public boolean getState() {
-        return config.getBoolean("alive");
+        return getConfig().getBoolean("alive");
     }
     public double getPoint() {
-        return config.getDouble("point");
+        return getConfig().getDouble("point");
     }
     public String getGameMode() {
-        return config.getString("game-mode");
+        return getConfig().getString("game-mode");
     }
+
     public void set(String key, Object value) {
-        config.set(key, value);
+        getConfig().set(key, value);
     }
     public void setName(String name) {
         set("name", name);
@@ -86,7 +70,7 @@ public class UserDataConfig {
     }
 
     public void reset() {           // Reset this.state
-        if(exists) {
+        if(exists()) {
             setState(true);
             setPoint(0);
         }
@@ -104,15 +88,8 @@ public class UserDataConfig {
         }
     }
     public static void reset_all() {                // Reset all players' state
-        for (String s : playerIdList) {
-            reset(s);
-        }
-    }
-    public void save(){
-        try {
-            config.save(configFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        for (String playerId : playerIdList) {
+            reset(playerId);
         }
     }
 
