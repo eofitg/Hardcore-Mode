@@ -3,6 +3,7 @@ package com.eofitg.hardcore;
 import com.eofitg.hardcore.cmdoperation.CommandRegister;
 import com.eofitg.hardcore.cmdoperation.TabCompleterRegister;
 import com.eofitg.hardcore.configuration.MainConfig;
+import com.eofitg.hardcore.configuration.SettingsConfig;
 import com.eofitg.hardcore.configuration.UserDataConfig;
 import com.eofitg.hardcore.listener.PlayerListener;
 import com.eofitg.hardcore.listener.PointListener;
@@ -31,13 +32,18 @@ public final class Hardcore extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+
         instance = this;
         pluginName = instance.getName();
+
+        // Save default resource config
         MainConfig.saveDefault();
+        new SettingsConfig().saveDefault();
+
         // Register Listeners
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new PointListener(), this);
+
         // Register Commands
         CommandRegister.register(MainConfig.getCmdNames());
         TabCompleterRegister.register(MainConfig.getCmdNames());
@@ -45,14 +51,17 @@ public final class Hardcore extends JavaPlugin {
         // Add all online players to the player list then toggle their game-mode
         if (MainConfig.getState()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
+
                 // playerId = playerUuid + '/' + playerName
                 List<String> playerIdList = MainConfig.getPlayerIdList();
                 List<String> uuidList = MainConfig.getUuidList();
                 String uuid = player.getUniqueId().toString();
                 String playerId = uuid + "/" + player.getName();
+
                 // Create config file for this player
                 UserDataConfig userDataConfig;
                 userDataConfig = new UserDataConfig(player, player.getUniqueId().toString(), player.getName());
+
                 if (!uuidList.contains(uuid)) {
                     // new player
                     playerIdList.add(playerId);
@@ -66,6 +75,7 @@ public final class Hardcore extends JavaPlugin {
                     //
                     player.setGameMode(GameMode.SURVIVAL);
                     player.sendTitle(ChatColor.BLUE + "WELCOME, NEW PLAYER!", ChatColor.GRAY + "You only have one life and do your best to survive!", 10, 150, 10);
+
                 } else {
                     // existing player
                     if(!playerIdList.contains(playerId)) {
@@ -79,6 +89,7 @@ public final class Hardcore extends JavaPlugin {
                         MainConfig.setPlayerIdList(playerIdList);
                         MainConfig.save();
                     }
+
                     boolean playerState = userDataConfig.getState();
                     if (!playerState) {
                         // player is dead
@@ -89,19 +100,21 @@ public final class Hardcore extends JavaPlugin {
                         player.setGameMode(GameMode.SURVIVAL);
                         player.sendTitle(ChatColor.GREEN + "YOU ARE ALIVE!", ChatColor.GRAY + "Survive and earn more points!", 10, 150, 10);
                     }
+
                 }
 
                 // Set the leaderboard
                 Leaderboard leaderboard = new Leaderboard(Hardcore.getInstance(), player, "Leaderboard");
                 leaderboards.put(player, leaderboard);
                 leaderboard.startShowing();
+
             }
         }
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+
         if (!MainConfig.getState()) {
             return;
         }
@@ -113,8 +126,10 @@ public final class Hardcore extends JavaPlugin {
             String uuid = player.getUniqueId().toString();
             String name = player.getName();
             String playerId = uuid + "/" + name;
+
             if (uuidList.contains(uuid) && new UserDataConfig(player, uuid, name).exists()) {
                 player.setGameMode(GameMode.valueOf(new UserDataConfig(player, uuid, name).getGameMode()));
+
                 if (!playerIdList.contains(playerId)) {
                     // Player name changed
                     for (int i = 0; i < playerIdList.size(); i++) {
@@ -123,16 +138,22 @@ public final class Hardcore extends JavaPlugin {
                             playerIdList.set(i, playerId);
                         }
                     }
+
                     MainConfig.setPlayerIdList(playerIdList);
                     MainConfig.save();
+
                 }
             }
+
             // Delete the leaderboard
             leaderboards.get(player).turnOff();
+
         }
+
         leaderboards.clear();
         instance = null;
         pluginName = null;
+
     }
 
 }

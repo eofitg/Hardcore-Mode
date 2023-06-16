@@ -1,5 +1,6 @@
 package com.eofitg.hardcore.configuration;
 
+import com.eofitg.hardcore.Hardcore;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -58,6 +59,9 @@ public abstract class AbstractConfig {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    public void saveDefault() {
+        Hardcore.getInstance().saveResource(this.childPath, !this.exists);
     }
 
 }
