@@ -9,7 +9,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -19,7 +18,7 @@ import java.util.List;
 
 import static com.eofitg.hardcore.Hardcore.leaderboards;
 
-public class PlayerListener extends AbstractListener implements Listener {
+public class PlayerListener extends AbstractListener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
@@ -143,4 +142,6 @@ public class PlayerListener extends AbstractListener implements Listener {
         }
     }
 
+    public static class PointListener extends AbstractListener {
+    }
 }

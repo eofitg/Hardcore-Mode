@@ -7,11 +7,10 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public class DamageListener extends AbstractListener implements Listener {
+public class DamageListener extends AbstractListener {
 
     @EventHandler
     public void getDamage(EntityDamageEvent e) {
