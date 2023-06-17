@@ -1,6 +1,7 @@
-package com.eofitg.hardcore.listener;
+package com.eofitg.hardcore.listener.pointlistener;
 
 import com.eofitg.hardcore.configuration.UserDataConfig;
+import com.eofitg.hardcore.listener.AbstractListener;
 import com.eofitg.hardcore.util.MathUtil;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -10,7 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public class PointListener extends AbstractListener implements Listener {
+public class DamageListener extends AbstractListener implements Listener {
 
     @EventHandler
     public void getDamage(EntityDamageEvent e) {

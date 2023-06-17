@@ -6,7 +6,7 @@ import com.eofitg.hardcore.configuration.MainConfig;
 import com.eofitg.hardcore.configuration.SettingsConfig;
 import com.eofitg.hardcore.configuration.UserDataConfig;
 import com.eofitg.hardcore.listener.PlayerListener;
-import com.eofitg.hardcore.listener.PointListener;
+import com.eofitg.hardcore.listener.pointlistener.DamageListener;
 import com.eofitg.hardcore.util.Leaderboard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -42,7 +42,7 @@ public final class Hardcore extends JavaPlugin {
 
         // Register Listeners
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PointListener(), this);
+        Bukkit.getPluginManager().registerEvents(new DamageListener(), this);
 
         // Register Commands
         CommandRegister.register(MainConfig.getCmdNames());
