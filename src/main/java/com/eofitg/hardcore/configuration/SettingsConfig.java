@@ -25,8 +25,8 @@ public class SettingsConfig extends AbstractConfig {
     public String getPoint() {
         return this.getConfig().getString(this.configName + ".point", "0.0");
     }
-    public String getPoint(String eventType) {
-        return this.getConfig().getString(this.configName + ".point." + eventType, "0.0");
+    public String getPoint(String type) {
+        return this.getConfig().getString(this.configName + ".point." + type, "0.0");
     }
     public String getLimit() {
         return this.getConfig().getString(this.configName + ".limit", "1");
