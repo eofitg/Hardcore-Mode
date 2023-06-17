@@ -41,17 +41,17 @@ public class UserDataConfig extends AbstractConfig{
     }
 
     public boolean getState() {
-        return getConfig().getBoolean("alive");
+        return this.getConfig().getBoolean("alive", true);
     }
     public double getPoint() {
-        return getConfig().getDouble("point");
+        return this.getConfig().getDouble("point", 0.0);
     }
     public String getGameMode() {
-        return getConfig().getString("game-mode");
+        return this.getConfig().getString("game-mode", "SURVIVAL");
     }
 
     public void set(String key, Object value) {
-        getConfig().set(key, value);
+        this.getConfig().set(key, value);
     }
     public void setName(String name) {
         set("name", name);
