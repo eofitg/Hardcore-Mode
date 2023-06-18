@@ -4,10 +4,13 @@ import com.eofitg.hardcore.Hardcore;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class UserDataConfig extends AbstractConfig {
 
+    private static final Set<String> configNameList = new SettingsConfig().getConfig().getKeys(false);
     private static final List<String> playerIdList = MainConfig.getPlayerIdList();
     private static final List<String> uuidList = MainConfig.getUuidList();
     public static final String PARENT_PATH = Hardcore.getInstance().getDataFolder() + "\\userdata";
@@ -23,11 +26,19 @@ public class UserDataConfig extends AbstractConfig {
     }
 
     public void init() {
+
         setName(getPlayerName());
         setUuid(getPlayerUuid());
         setState(true);
         setPoint(0);
         setGameMode(getPlayer().getGameMode().toString());
+
+        for (String s : configNameList) {
+            setTriggered(s, 0);
+            setLimit(s, 0);
+            setMemory(s, Collections.emptyList());
+        }
+
     }
 
     public Player getPlayer() {
@@ -50,6 +61,16 @@ public class UserDataConfig extends AbstractConfig {
         return this.getConfig().getString("game-mode", "SURVIVAL");
     }
 
+    public int getTriggered(String configName) {
+        return this.getConfig().getInt(configName + ".triggered", 0);
+    }
+    public int getLimit(String configName) {
+        return this.getConfig().getInt(configName + ".limit", 0);
+    }
+    public List<String> getMemory(String configName) {
+        return this.getConfig().getStringList(configName + ".memory");
+    }
+
     public void set(String key, Object value) {
         this.getConfig().set(key, value);
     }
@@ -59,6 +80,7 @@ public class UserDataConfig extends AbstractConfig {
     public void setUuid(String uuid) {
         set("uuid", uuid);
     }
+
     public void setState(boolean state) {
         set("alive", state);
     }
@@ -69,10 +91,25 @@ public class UserDataConfig extends AbstractConfig {
         set("game-mode", gamemode);
     }
 
+    public void setTriggered(String configName, int triggered) {
+        set(configName + ".triggered", triggered);
+    }
+    public void setLimit(String configName, int limit) {
+        set(configName + ".limit", limit);
+    }
+    public void setMemory(String configName, List<String> memory) {
+        set(configName + ".memory", memory);
+    }
+
     public void reset() {           // Reset this.state
         if (exists()) {
             setState(true);
             setPoint(0);
+            for (String s : configNameList) {
+                setTriggered(s, 0);
+                setLimit(s, 0);
+                setMemory(s, Collections.emptyList());
+            }
         }
     }
     public static void reset(String playerId) {         // Try to reset a designated player's state
@@ -81,8 +118,7 @@ public class UserDataConfig extends AbstractConfig {
         if (uuidList.contains(uuid)) {
             UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(uuid).getPlayer(), uuid, name);
             if (userDataConfig.exists()) {
-                userDataConfig.setState(true);
-                userDataConfig.setPoint(0);
+                userDataConfig.reset();
                 userDataConfig.save();
             }
         }
