@@ -16,14 +16,14 @@ public class DamageListener extends AbstractListener {
     @EventHandler
     public void getDamage(EntityDamageEvent e) {
 
-        if(!state) {
+        if (!state) {
             return;
         }
 
         if (e.getEntity() instanceof Player) {
 
             UserDataConfig userDataConfig = new UserDataConfig(((Player) e.getEntity()).getPlayer(), e.getEntity().getUniqueId().toString(), e.getEntity().getName());
-            if(!userDataConfig.getState()) return;
+            if (!userDataConfig.getState()) return;
 
             double heart = Math.round(((LivingEntity) e.getEntity()).getHealth() * 2) / 20.0;
             double damage = Math.min(heart, Math.round(e.getFinalDamage() * 2) / 20.0);
@@ -38,7 +38,7 @@ public class DamageListener extends AbstractListener {
     @EventHandler
     public void causeDamage(EntityDamageByEntityEvent e) {
 
-        if(!state) {
+        if (!state) {
             return;
         }
 
@@ -50,7 +50,7 @@ public class DamageListener extends AbstractListener {
                 if (e.getEntityType() == EntityType.ARMOR_STAND) return;
 
                 UserDataConfig userDataConfig = new UserDataConfig(((Player) e.getDamager()).getPlayer(), e.getDamager().getUniqueId().toString(), e.getDamager().getName());
-                if(!userDataConfig.getState()) return;
+                if (!userDataConfig.getState()) return;
 
                 double heart = Math.round(((LivingEntity) e.getEntity()).getHealth() * 2) / 20.0;
                 double damage = Math.min(heart, Math.round(e.getFinalDamage() * 2) / 20.0);

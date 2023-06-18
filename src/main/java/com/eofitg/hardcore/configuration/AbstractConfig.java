@@ -22,7 +22,7 @@ public abstract class AbstractConfig {
         this.file = new File(parentPath, childPath);
         this.config = new YamlConfiguration();
         this.exists = file.exists();
-        if(!exists) {
+        if (!exists) {
             this.file.getParentFile().mkdirs();
             try {
                 this.file.createNewFile();

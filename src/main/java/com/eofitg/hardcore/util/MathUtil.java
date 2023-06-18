@@ -29,7 +29,7 @@ public class MathUtil {
 
     // Random Number Generators
     public static int randomInt(int MIN, int MAX) {
-        if(MAX <= MIN) {
+        if (MAX <= MIN) {
             return 0;
         }
         SecureRandom r = null;

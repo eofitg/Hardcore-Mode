@@ -34,10 +34,10 @@ public class PlayerListener extends AbstractListener {
         if (!state) {
             if (uuidList.contains(uuid) && new UserDataConfig(player, uuid, name).exists()) {
                 player.setGameMode(GameMode.valueOf(new UserDataConfig(player, uuid, name).getGameMode()));
-                if(!playerIdList.contains(playerId)) {
+                if (!playerIdList.contains(playerId)) {
                     // Player name changed
-                    for(int i = 0; i < playerIdList.size(); i ++) {
-                        if(playerIdList.get(i).contains(uuid)) {
+                    for (int i = 0; i < playerIdList.size(); i ++) {
+                        if (playerIdList.get(i).contains(uuid)) {
                             // Update player id (uuid + '/' + name)
                             playerIdList.set(i, playerId);
                         }
@@ -65,10 +65,10 @@ public class PlayerListener extends AbstractListener {
             player.sendTitle(ChatColor.BLUE + "WELCOME, NEW PLAYER!", ChatColor.GRAY + "You only have one life and do your best to survive!", 10, 150, 10);
         } else {
             // Existing player
-            if(!playerIdList.contains(playerId)) {
+            if (!playerIdList.contains(playerId)) {
                 // Player name changed
-                for(int i = 0; i < playerIdList.size(); i ++) {
-                    if(playerIdList.get(i).contains(uuid)) {
+                for (int i = 0; i < playerIdList.size(); i ++) {
+                    if (playerIdList.get(i).contains(uuid)) {
                         // Update player id (uuid + '/' + name)
                         playerIdList.set(i, playerId);
                     }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class CommandChecker {
 
-    public static boolean conform (String requestCommand, String commandName) {
+    public static boolean conform(String requestCommand, String commandName) {
 
         List<String> cmdList = MainConfig.getCmdList(commandName);
         String pluginName = Hardcore.getPluginName().toLowerCase();

@@ -70,7 +70,7 @@ public class UserDataConfig extends AbstractConfig {
     }
 
     public void reset() {           // Reset this.state
-        if(exists()) {
+        if (exists()) {
             setState(true);
             setPoint(0);
         }

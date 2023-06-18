@@ -12,16 +12,13 @@ public class TabCompleter extends CommandHandler implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-
         // /hardcore <command>
-        if(CommandChecker.conform(label, "hardcore")) {
+        if (CommandChecker.conform(label, "hardcore")) {
             if (sender instanceof Player && args.length <= 1) {
                 return Arrays.asList("help", "on", "off", "reset");
             }
         }
-
         return null;
-
     }
 
 }
