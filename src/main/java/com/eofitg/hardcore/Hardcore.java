@@ -5,18 +5,14 @@ import com.eofitg.hardcore.cmdoperation.TabCompleterRegister;
 import com.eofitg.hardcore.configuration.MainConfig;
 import com.eofitg.hardcore.configuration.SettingsConfig;
 import com.eofitg.hardcore.configuration.UserDataConfig;
-import com.eofitg.hardcore.listener.AbstractListener;
 import com.eofitg.hardcore.listener.PlayerListener;
 import com.eofitg.hardcore.listener.PointListener;
-import com.eofitg.hardcore.listener.pointlistener.DamageListener;
-import com.eofitg.hardcore.util.ClassUtil;
 import com.eofitg.hardcore.util.Leaderboard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.*;
 

@@ -42,10 +42,12 @@ public class Leaderboard {
     }
 
     public void startShowing() {
+
         // Check out if this leaderboard is running
         if (isRun) {
             return;
         }
+
         // Make sure this player's scoreboard is valid
         if (player == null || !player.isOnline()) {
             return;
@@ -75,12 +77,16 @@ public class Leaderboard {
             Map<String, Double> playerPoint = new HashMap<>();
             List<String> playerIdList = MainConfig.getPlayerIdList();
             for (int i = 0; i < playerIdList.size() && i < N; i++) {
+
                 String uuid = playerIdList.get(i).split("/")[0];
                 String name = playerIdList.get(i).split("/")[1];
-                UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(name).getPlayer(), uuid, name);
+
+                UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getPlayer(), uuid, name);
                 playerState.put(name, userDataConfig.getState());
                 playerPoint.put(name, userDataConfig.getPoint());
+
             }
+
             // sort playerPoint by point
             List<Map.Entry<String, Double>> pointRanking = new LinkedList<>(playerPoint.entrySet());
             // Collections.sort(pointRanking, Map.Entry.comparingByValue());

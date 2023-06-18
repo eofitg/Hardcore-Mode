@@ -13,15 +13,21 @@ public class CommandHandler implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String args[]) {
+
+        // /hardcore <command>
         if (CommandChecker.conform(label, "hardcore")) {
+
+            // Commands from the serve console
             if (!sender.isOp()) {
                 sender.sendMessage(ChatColor.RED + "No permission.");
                 return true;
             }
+            // /hardcore *** *** ***
             if (args.length > 2) {
                 sender.sendMessage(ChatColor.RED + "Invalid command.");
                 return true;
             }
+            // /hardcore
             if (args.length == 0) {
                 sender.sendMessage(ChatColor.RED + "Empty parameters.");
                 return true;
@@ -48,6 +54,7 @@ public class CommandHandler implements CommandExecutor {
             }
 
             switch (childCmd) {
+                // /hardcore help
                 case "help" : {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7- &a/hardcore help &f- &7Get Help"));
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7- &a/hardcore on &f- &7Turn on the hardcore mode"));
@@ -55,27 +62,34 @@ public class CommandHandler implements CommandExecutor {
                     sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7- &a/hardcore reset &f- &7Reset players' survival states"));
                     break;
                 }
+                // /hardcore on
                 case "on" : {
                     MainConfig.setState(true);
                     MainConfig.save();
                     sender.sendMessage(ChatColor.BLUE + "Hardcore mode is on.");
                     break;
                 }
+                // /hardcore off
                 case "off" : {
                     MainConfig.setState(false);
                     MainConfig.save();
                     sender.sendMessage(ChatColor.BLUE + "Hardcore mode is off.");
                     break;
                 }
+                // /hardcore reset
                 case "reset" : {
                     UserDataConfig.reset_all();
                     sender.sendMessage(ChatColor.BLUE + "Player state has reset.");
                     break;
                 }
             }
+
             return true;
+
         }
+
         return false;
+
     }
 
 }
