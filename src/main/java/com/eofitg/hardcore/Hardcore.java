@@ -42,7 +42,7 @@ public final class Hardcore extends JavaPlugin {
 
         // Register Listeners
         new PlayerListener().register();
-        new PointListener().register();
+        new PointListener().register(instance);
 
         // Register Commands
         CommandRegister.register(MainConfig.getCmdNames());

@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class UserDataConfig extends AbstractConfig{
+public class UserDataConfig extends AbstractConfig {
 
     private static final List<String> playerIdList = MainConfig.getPlayerIdList();
     private static final List<String> uuidList = MainConfig.getUuidList();

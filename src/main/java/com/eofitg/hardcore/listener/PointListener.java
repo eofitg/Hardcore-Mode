@@ -1,11 +1,11 @@
 package com.eofitg.hardcore.listener;
 
 import com.eofitg.hardcore.listener.pointlistener.*;
+import org.bukkit.plugin.Plugin;
 
 public class PointListener extends AbstractListener {
 
-    @Override
-    public void register() {
+    public void register(Plugin plugin) {
         new DamageListener().register();
         new CraftListener().register();
         new ExpListener().register();
@@ -14,5 +14,6 @@ public class PointListener extends AbstractListener {
         new StructureListener().register();
         new BiomesListener().register();
     }
+
 
 }
