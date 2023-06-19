@@ -92,8 +92,8 @@ public class PointListener extends AbstractListener {
             for (String s : strList) {
                 if (isInt(s)) {
                     int n = Integer.parseInt(s);
-                    // The normal limit shouldn't be less than 1
-                    if (n < 1) continue;
+                    // The normal limit shouldn't be less than -1
+                    if (n < -1) continue;
                     if (!pointList.contains(n)) {
                         // De-duplication
                         pointList.add(n);
@@ -117,8 +117,8 @@ public class PointListener extends AbstractListener {
                 // Read only the first two valid numbers
                 if (pointList.size() > 1) break;
                 if (isInt(s)) {
-                    // The normal limit shouldn't be less than 1
-                    if (Integer.parseInt(s) >= 1) {
+                    // The normal limit shouldn't be less than -1
+                    if (Integer.parseInt(s) >= -1) {
                         pointList.add(Integer.parseInt(s));
                     }
                 }

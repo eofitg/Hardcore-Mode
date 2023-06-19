@@ -4,8 +4,8 @@ import com.eofitg.hardcore.Hardcore;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class UserDataConfig extends AbstractConfig {
@@ -34,9 +34,9 @@ public class UserDataConfig extends AbstractConfig {
         setGameMode(getPlayer().getGameMode().toString());
 
         for (String s : configNameList) {
-            setTriggered(s, 0);
+            setTriggered(s, false);
             setLimit(s, 0);
-            setMemory(s, Collections.emptyList());
+            setTriggeredTime(s, null);
         }
 
     }
@@ -51,24 +51,30 @@ public class UserDataConfig extends AbstractConfig {
         return this.name;
     }
 
+    // Check out if this player is alive
     public boolean getState() {
         return this.getConfig().getBoolean("alive", true);
     }
+    // Get this player's survival point
     public double getPoint() {
         return this.getConfig().getDouble("point", 0.0);
     }
+    // Get this player's game-mode
     public String getGameMode() {
         return this.getConfig().getString("game-mode", "SURVIVAL");
     }
 
-    public int getTriggered(String configName) {
-        return this.getConfig().getInt(configName + ".triggered", 0);
+    // Check out if this event has been triggered
+    public boolean triggered(String configName) {
+        return this.getConfig().getBoolean(configName + ".triggered", false);
     }
+    // Get the number of times this object has been triggered in this event
+    public int getTriggeredTime(String configName, String object) {
+        return this.getConfig().getInt(configName + ".triggered-time." + object, 0);
+    }
+    // Get the maximum triggered limit of this event
     public int getLimit(String configName) {
         return this.getConfig().getInt(configName + ".limit", 0);
-    }
-    public List<String> getMemory(String configName) {
-        return this.getConfig().getStringList(configName + ".memory");
     }
 
     public void set(String key, Object value) {
@@ -81,24 +87,33 @@ public class UserDataConfig extends AbstractConfig {
         set("uuid", uuid);
     }
 
+    // Set this player's survival state
     public void setState(boolean state) {
         set("alive", state);
     }
+    // Set this player's survival point
     public void setPoint(double point) {
         set("point", point);
     }
+    // Set this player's game-mode
     public void setGameMode(String gamemode) {
         set("game-mode", gamemode);
     }
 
-    public void setTriggered(String configName, int triggered) {
-        set(configName + ".triggered", triggered);
+    // Set this event's triggered state
+    public void setTriggered(String configName, Boolean state) {
+        set(configName + ".triggered", state);
     }
+    // Set the number of times this object has been triggered in this event
+    public void setTriggeredTime(String configName, String object, int triggeredTime) {
+        set(configName + ".triggered-time." + object, triggeredTime);
+    }
+    public void setTriggeredTime(String configName, Objects objects) {
+        set(configName + ".triggered-time", objects);
+    }
+    // Set the maximum triggered limit of this event
     public void setLimit(String configName, int limit) {
         set(configName + ".limit", limit);
-    }
-    public void setMemory(String configName, List<String> memory) {
-        set(configName + ".memory", memory);
     }
 
     public void reset() {           // Reset this.state
@@ -106,9 +121,9 @@ public class UserDataConfig extends AbstractConfig {
             setState(true);
             setPoint(0);
             for (String s : configNameList) {
-                setTriggered(s, 0);
+                setTriggered(s, false);
                 setLimit(s, 0);
-                setMemory(s, Collections.emptyList());
+                setTriggeredTime(s, null);
             }
         }
     }
