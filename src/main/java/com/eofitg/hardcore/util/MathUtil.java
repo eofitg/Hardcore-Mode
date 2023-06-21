@@ -20,7 +20,7 @@ public class MathUtil {
 
     // Digital Checkers
     public static boolean isInt(String s) {
-        return s.matches("[0-9]+");
+        return s.matches("[+-]?\\d+");
     }
     public static boolean isDouble(String s) {
         Pattern pattern = Pattern.compile("[+-]?\\d+(.\\d+)?");

@@ -68,6 +68,14 @@ public class UserDataConfig extends AbstractConfig {
     public boolean triggered(String configName) {
         return this.getConfig().getBoolean(configName + ".triggered", false);
     }
+    // Check out if this object of this event has been triggered
+    public boolean triggered(String configName, String object) {
+        return this.getConfig().getBoolean(configName + ".triggered." + object, false);
+    }
+    // Get the number of times this event has been triggered
+    public int getTriggeredTime(String configName) {
+        return this.getConfig().getInt(configName + ".triggered-time", 0);
+    }
     // Get the number of times this object has been triggered in this event
     public int getTriggeredTime(String configName, String object) {
         return this.getConfig().getInt(configName + ".triggered-time." + object, 0);
@@ -75,6 +83,10 @@ public class UserDataConfig extends AbstractConfig {
     // Get the maximum triggered limit of this event
     public int getLimit(String configName) {
         return this.getConfig().getInt(configName + ".limit", 0);
+    }
+    // Get this object's maximum triggered limit of this event
+    public int getLimit(String configName, String object) {
+        return this.getConfig().getInt(configName + ".limit." + object, 0);
     }
 
     public void set(String key, Object value) {
@@ -104,6 +116,14 @@ public class UserDataConfig extends AbstractConfig {
     public void setTriggered(String configName, Boolean state) {
         set(configName + ".triggered", state);
     }
+    // Set this object's triggered state of this event
+    public void setTriggered(String configName, String object, Boolean state) {
+        set(configName + ".triggered." + object, state);
+    }
+    // Get the number of times this event has been triggered
+    public void setTriggeredTime(String configName, int triggeredTime) {
+        set(configName + ".triggered-time", triggeredTime);
+    }
     // Set the number of times this object has been triggered in this event
     public void setTriggeredTime(String configName, String object, int triggeredTime) {
         set(configName + ".triggered-time." + object, triggeredTime);
@@ -114,6 +134,10 @@ public class UserDataConfig extends AbstractConfig {
     // Set the maximum triggered limit of this event
     public void setLimit(String configName, int limit) {
         set(configName + ".limit", limit);
+    }
+    // Set this object's maximum triggered limit of this event
+    public void setLimit(String configName, String object, int limit) {
+        set(configName + ".limit." + object, limit);
     }
 
     public void reset() {           // Reset this.state

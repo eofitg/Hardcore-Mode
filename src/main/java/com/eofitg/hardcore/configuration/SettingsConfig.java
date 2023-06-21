@@ -31,5 +31,8 @@ public class SettingsConfig extends AbstractConfig {
     public String getLimit() {
         return this.getConfig().getString(this.configName + ".limit", "1");
     }
+    public String getLimit(String type) {
+        return this.getConfig().getString(this.configName + ".limit." + type, "1");
+    }
 
 }

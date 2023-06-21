@@ -31,7 +31,9 @@ damage:
   point:
     get: -1
     cause: 0.1
-  limit: -1
+  limit:
+    get: -1
+    cause: -1
 
 craft:
   enable: true
@@ -47,7 +49,9 @@ exp:
     # Judging by level or experience
     get: true
     use: true
-  limit: -1
+  limit:
+    get: -1
+    use: -1
 
 kill:
   enable: true

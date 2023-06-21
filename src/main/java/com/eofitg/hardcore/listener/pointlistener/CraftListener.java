@@ -18,9 +18,7 @@ public class CraftListener extends PointListener {
     public void onCraft(CraftItemEvent e) {
 
         // If plugin is disabled
-        if (!state) {
-            return;
-        }
+        if (!state) return;
 
         UUID uuid = e.getInventory().getViewers().get(0).getUniqueId();
         String name = e.getInventory().getViewers().get(0).getName();
@@ -30,15 +28,11 @@ public class CraftListener extends PointListener {
         // Get craft settings config
         CraftConfig craftConfig = new CraftConfig();
         // If craft settings is disabled
-        if (!craftConfig.getState()) {
-            return;
-        }
+        if (!craftConfig.getState()) return;
 
         UserDataConfig userDataConfig = new UserDataConfig(player, uuid.toString(), name);
         // If this player is dead
-        if (!userDataConfig.getState()) {
-            return;
-        }
+        if (!userDataConfig.getState()) return;
 
         // This event's triggered state
         boolean triggered = userDataConfig.triggered(configName);
@@ -57,9 +51,7 @@ public class CraftListener extends PointListener {
         }
 
         // If the triggered time has reached the triggered limit and it's not unlimited
-        if (triggeredTime >= userLimit && userLimit != -1) {
-            return;
-        }
+        if (triggeredTime >= userLimit && userLimit != -1) return;
 
         double userPoint = userDataConfig.getPoint() + parsePoint(craftConfig.getPoint());
         userDataConfig.setPoint(userPoint);
