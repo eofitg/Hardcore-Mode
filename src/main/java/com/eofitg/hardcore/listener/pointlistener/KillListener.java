@@ -1,6 +1,6 @@
 package com.eofitg.hardcore.listener.pointlistener;
 
-import com.eofitg.hardcore.listener.AbstractListener;
+import com.eofitg.hardcore.listener.PointListener;
 
-public class KillListener extends AbstractListener {
+public class KillListener extends PointListener {
 }

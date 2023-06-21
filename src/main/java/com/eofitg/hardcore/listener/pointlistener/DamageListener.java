@@ -3,6 +3,7 @@ package com.eofitg.hardcore.listener.pointlistener;
 import com.eofitg.hardcore.configuration.UserDataConfig;
 import com.eofitg.hardcore.configuration.settingsconfig.DamageConfig;
 import com.eofitg.hardcore.listener.PointListener;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -10,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import static com.eofitg.hardcore.util.MathUtil.round_half_up;
@@ -75,19 +77,36 @@ public class DamageListener extends PointListener {
         // If plugin is disabled
         if (!state) return;
 
-        if (!(e.getDamager() instanceof Player)) return;
+        if (!(e.getDamager() instanceof Player) && !(e.getDamager() instanceof Arrow)) return;
         if (!(e.getEntity() instanceof LivingEntity)) return;
         // Why Mojang made ARMOR_STAND a damageable entity???
         if (e.getEntityType() == EntityType.ARMOR_STAND) return;
 
-        UUID uuid = e.getDamager().getUniqueId();
-        String name = e.getDamager().getName();
-        Player player = ((Player) e.getDamager()).getPlayer();
+        UUID uuid = null;
+        String name = "";
+        Player player = null;
+
+        if (e.getDamager() instanceof Arrow) {
+            Arrow a = (Arrow) e.getDamager();
+            if (a.getShooter() instanceof Player) {
+                uuid = ((Player) a.getShooter()).getUniqueId();
+                name = ((Player) a.getShooter()).getName();
+                player = ((Player) a.getShooter()).getPlayer();
+            }
+        } else if (e.getDamager() instanceof Player) {
+            uuid = e.getDamager().getUniqueId();
+            name = e.getDamager().getName();
+            player = ((Player) e.getDamager()).getPlayer();
+        }
 
         // Get damage settings config
         DamageConfig damageConfig = new DamageConfig();
         // If craft settings is disabled
         if (!damageConfig.getState()) return;
+
+        if (uuid == null || name.equals("") || player == null) { // Check out
+            return;
+        }
 
         UserDataConfig userDataConfig = new UserDataConfig(player, uuid.toString(), name);
         // If this player is dead
