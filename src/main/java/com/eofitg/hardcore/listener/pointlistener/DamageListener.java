@@ -100,7 +100,7 @@ public class DamageListener extends PointListener {
 
         // Get damage settings config
         DamageConfig damageConfig = new DamageConfig();
-        // If craft settings is disabled
+        // If damage settings is disabled
         if (!damageConfig.getState()) return;
 
         if (uuid == null || name.equals("") || player == null) { // Check out

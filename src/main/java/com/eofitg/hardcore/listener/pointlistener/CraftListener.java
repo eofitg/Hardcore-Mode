@@ -23,7 +23,7 @@ public class CraftListener extends PointListener {
         UUID uuid = e.getInventory().getViewers().get(0).getUniqueId();
         String name = e.getInventory().getViewers().get(0).getName();
         Player player = Bukkit.getPlayer(uuid);
-        String itemName = e.getCurrentItem().getType().toString();
+        String itemType = e.getCurrentItem().getType().toString();
 
         // Get craft settings config
         CraftConfig craftConfig = new CraftConfig();
@@ -39,7 +39,7 @@ public class CraftListener extends PointListener {
         // The maximum triggered limit
         int userLimit = userDataConfig.getLimit(configName);
         // The number of times this item has been triggered
-        int triggeredTime = userDataConfig.getTriggeredTime(configName, itemName);
+        int triggeredTime = userDataConfig.getTriggeredTime(configName, itemType);
 
         // If it is the first time this event is triggered
         // Writing this player's trigger limit (according to the settings) to this player's data config
@@ -55,7 +55,7 @@ public class CraftListener extends PointListener {
 
         double userPoint = userDataConfig.getPoint() + parsePoint(craftConfig.getPoint());
         userDataConfig.setPoint(userPoint);
-        userDataConfig.setTriggeredTime(configName, itemName, triggeredTime + 1);
+        userDataConfig.setTriggeredTime(configName, itemType, triggeredTime + 1);
         userDataConfig.save();
 
     }
