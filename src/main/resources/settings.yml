@@ -64,7 +64,7 @@ kill:
 
 advancement:
   enable: true
-  point: 1000
+  point: 100
 
 structure:
   enable: true
