@@ -36,6 +36,12 @@ public class DamageListener extends PointListener {
         DamageConfig damageConfig = new DamageConfig();
         // If damage settings is disabled
         if (!damageConfig.getState()) return;
+        // Check whether players can attack others to earn points
+        if (!damageConfig.allowPvp() && e instanceof EntityDamageByEntityEvent) {
+            if (((EntityDamageByEntityEvent) e).getDamager() instanceof Player) {
+                return;
+            }
+        }
 
         UserDataConfig userDataConfig = new UserDataConfig(player, uuid.toString(), name);
         // If this player is dead
@@ -102,6 +108,8 @@ public class DamageListener extends PointListener {
         DamageConfig damageConfig = new DamageConfig();
         // If damage settings is disabled
         if (!damageConfig.getState()) return;
+        // Check whether players can attack others to earn points
+        if (!damageConfig.allowPvp() && e.getEntity() instanceof Player) return;
 
         if (uuid == null || name.equals("") || player == null) { // Check out
             return;

@@ -34,6 +34,8 @@ damage:
   limit:
     get: -1
     cause: -1
+  # Whether you can attack players to earn points
+  pvp: false
 
 craft:
   enable: true

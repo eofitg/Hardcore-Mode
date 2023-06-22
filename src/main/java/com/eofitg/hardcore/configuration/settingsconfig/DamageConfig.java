@@ -10,4 +10,8 @@ public class DamageConfig extends SettingsConfig {
         super(CONFIG_NAME);
     }
 
+    public boolean allowPvp() {
+        return this.getConfig().getBoolean(this.getConfigName() + ".pvp", false);
+    }
+
 }
