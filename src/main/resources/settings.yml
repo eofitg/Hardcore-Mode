@@ -46,9 +46,9 @@ exp:
     get: 0.5
     use: 1
   by-level:
-    # Judging by level or experience
+    # Judging by experience level or point
     get: true
-    use: true
+    use: true # Please keep this option always true
   limit:
     get: -1
     use: -1

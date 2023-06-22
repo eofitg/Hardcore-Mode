@@ -11,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 import static com.eofitg.hardcore.util.MathUtil.round_half_up;
@@ -35,7 +34,7 @@ public class DamageListener extends PointListener {
 
         // Get damage settings config
         DamageConfig damageConfig = new DamageConfig();
-        // If craft settings is disabled
+        // If damage settings is disabled
         if (!damageConfig.getState()) return;
 
         UserDataConfig userDataConfig = new UserDataConfig(player, uuid.toString(), name);
