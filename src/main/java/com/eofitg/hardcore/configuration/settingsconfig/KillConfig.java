@@ -11,7 +11,7 @@ public class KillConfig extends SettingsConfig {
     }
 
     public boolean allowPvp() {
-        return this.getConfig().getBoolean(this.getConfigName() + ".pvp.", false);
+        return this.getConfig().getBoolean(this.getConfigName() + ".pvp", false);
     }
 
 }
