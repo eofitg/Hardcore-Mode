@@ -12,21 +12,22 @@ import java.util.UUID;
 public class AdvancementListener extends PointListener {
 
     private static final String configName = "advancement";
+    private static final String[] advancements = {"minecraft:adventure/", "minecraft:end/", "minecraft:nether/", "minecraft:husbandry/", "minecraft:story/"};
 
     @EventHandler
-    public void onFinishAdvancement(PlayerAdvancementDoneEvent e) {
+    public void finishAdvancement(PlayerAdvancementDoneEvent e) {
 
         // If plugin is disabled
         if (!state) return;
 
         String key = e.getAdvancement().getKey().toString();
         // Only adventure advancement
-        if (!key.startsWith("minecraft:adventure")) return;
+        if (isAdvancement(key) == null) return;
 
         UUID uuid = e.getPlayer().getUniqueId();
         String name = e.getPlayer().getName();
         Player player = e.getPlayer();
-        String title = e.getAdvancement().getDisplay().getTitle();
+        String advancement = key.substring(isAdvancement(key).length());
 
         // Get advancement settings config
         AdvancementConfig advancementConfig = new AdvancementConfig();
@@ -40,7 +41,7 @@ public class AdvancementListener extends PointListener {
         // This event's triggered state
         boolean triggered = userDataConfig.triggered(configName);
         // The object of this event's triggered state
-        boolean objectTriggered = userDataConfig.triggered(configName, title);
+        boolean objectTriggered = userDataConfig.triggered(configName, advancement);
 
         if (!triggered) {
             userDataConfig.setLimit(configName, 1);
@@ -52,9 +53,18 @@ public class AdvancementListener extends PointListener {
 
         double userPoint = userDataConfig.getPoint() + parsePoint(advancementConfig.getPoint());
         userDataConfig.setPoint(userPoint);
-        userDataConfig.setTriggered(configName, title, true);
+        userDataConfig.setTriggered(configName, advancement, true);
         userDataConfig.save();
 
+    }
+
+    private static String isAdvancement(String str) {
+        for (String s : advancements) {
+            if (str.startsWith(s)) {
+                return s;
+            }
+        }
+        return null;
     }
 
 }
