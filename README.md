@@ -1,2 +1,2 @@
 # Hardcore-Mode
-Server hardcore mode addition.
+Minecraft server's hardcore mode addition.
