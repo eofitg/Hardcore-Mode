@@ -27,7 +27,7 @@ public class AdvancementListener extends PointListener {
         UUID uuid = e.getPlayer().getUniqueId();
         String name = e.getPlayer().getName();
         Player player = e.getPlayer();
-        String advancement = key.substring(isAdvancement(key).length());
+        String advancement = key.toLowerCase();
 
         // Get advancement settings config
         AdvancementConfig advancementConfig = new AdvancementConfig();
@@ -38,14 +38,13 @@ public class AdvancementListener extends PointListener {
         // If this player is dead
         if (!userDataConfig.getState()) return;
 
-        // This event's triggered state
-        boolean triggered = userDataConfig.triggered(configName);
+        // The maximum triggered limit (should be always 1)
+        int userLimit = userDataConfig.getLimit(configName);
         // The object of this event's triggered state
         boolean objectTriggered = userDataConfig.triggered(configName, advancement);
 
-        if (!triggered) {
+        if (userLimit == 0) {
             userDataConfig.setLimit(configName, 1);
-            userDataConfig.setTriggered(configName, true);
             userDataConfig.save();
         }
 

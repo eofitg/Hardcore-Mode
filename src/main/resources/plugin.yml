@@ -1,5 +1,5 @@
 name: HardcoreMode
-version: '${project.version}'
+version: 1.0.0
 main: com.eofitg.hardcore.Hardcore
 api-version: 1.18
 authors: [ eofitg ]
