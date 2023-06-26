@@ -42,10 +42,12 @@ public class Leaderboard {
     }
 
     public void startShowing() {
+
         // Check out if this leaderboard is running
         if (isRun) {
             return;
         }
+
         // Make sure this player's scoreboard is valid
         if (player == null || !player.isOnline()) {
             return;
@@ -55,11 +57,11 @@ public class Leaderboard {
 
         int N = 7;          // The number of players displayed on the leaderboard
         List<String> tempList = Lists.newArrayList();
-        for (int i = 0; i <= N; i++) {
+        for (int i = 0; i <= N; i ++) {
             tempList.add("§" + ChatColor.values()[i].getChar());
         }
 
-        for (int i = 0; i <= N; i++) {
+        for (int i = 0; i <= N; i ++) {
             Team row = scoreboard.registerNewTeam("" + i);
             row.addEntry(tempList.get(i));
             objective.getScore(tempList.get(i)).setScore(N-i);
@@ -74,19 +76,23 @@ public class Leaderboard {
             Map<String, Boolean> playerState = new HashMap<>();
             Map<String, Double> playerPoint = new HashMap<>();
             List<String> playerIdList = MainConfig.getPlayerIdList();
-            for (int i = 0; i < playerIdList.size() && i < N; i++) {
+            for (int i = 0; i < playerIdList.size() && i < N; i ++) {
+
                 String uuid = playerIdList.get(i).split("/")[0];
                 String name = playerIdList.get(i).split("/")[1];
-                UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(name).getPlayer(), uuid, name);
+
+                UserDataConfig userDataConfig = new UserDataConfig(Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getPlayer(), uuid, name);
                 playerState.put(name, userDataConfig.getState());
                 playerPoint.put(name, userDataConfig.getPoint());
+
             }
+
             // sort playerPoint by point
             List<Map.Entry<String, Double>> pointRanking = new LinkedList<>(playerPoint.entrySet());
             // Collections.sort(pointRanking, Map.Entry.comparingByValue());
             Collections.sort(pointRanking, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
 
-            for (int i = 0, j = 0; i < text.size(); i++) {
+            for (int i = 0, j = 0; i < text.size(); i ++) {
                 Team row = text.get(i); // Get every Team
                 if (i == 0) {
                     // Date & Time HUD

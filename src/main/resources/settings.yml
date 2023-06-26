@@ -1,0 +1,75 @@
+#
+#  The player's points will br changed when these following events occur:
+#
+#  - Damage             -    getting / causing damage
+#  - Craft              -    crafting items
+#  - Exp                -    getting / using experiences / levels
+#  - Kill               -    killing entity / players
+#  - Advancement        -    completing a advance list
+#  - Structure          -    arriving at a new structure               (Unrealized)
+#  - Biomes             -    arriving at a new biomes                  (Unrealized)
+#
+#
+#
+#  Settings
+#
+#   enable: true|false              -   Toggle this configuration's state ( enable or not )
+#
+#   point: a | a,b,... | a~b        -   How many points will player get
+#
+#     ~1: a means player will get 'a' points from this event ( The smallest unit is 0.1 )
+#     ~2: a,b means player will get 'a' or 'b' or any other number of points from this event ( No limit but please be careful when using, try not to set too many numbers )
+#     ~3: a~b means player will get a random number of points from 'a' to 'b' ( Including a and NOT including b )
+#     ~4: If a<0 or b<0, that means player will lose points from this event
+#     ~5: There are NO spaces between numbers and characters
+#
+#   limit: a | a,b,... | a~b        -   The maximum trigger limit for this event ( -1 means no limit )
+#
+
+damage:
+  enable: true
+  point:
+    get: -1
+    cause: 0.1
+  limit:
+    get: -1
+    cause: -1
+  # Whether you can attack players to earn points
+  pvp: false
+
+craft:
+  enable: true
+  point: 5
+  limit: 1
+
+exp:
+  enable: true
+  point:
+    get: 0.5
+    use: 1
+  by-level:
+    # Judging by experience level or point
+    get: true
+    use: true # Please keep this option always true
+  limit:
+    get: -1
+    use: -1
+
+kill:
+  enable: true
+  point: 20
+  limit: 1
+  # Whether you can kill players to earn points
+  pvp: false
+
+advancement:
+  enable: true
+  point: 100
+
+structure:
+  enable: true
+  point: 150
+
+biomes:
+  enable: true
+  point: 100

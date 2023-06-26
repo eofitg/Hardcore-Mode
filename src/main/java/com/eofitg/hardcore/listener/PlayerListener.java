@@ -9,7 +9,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -19,23 +18,26 @@ import java.util.List;
 
 import static com.eofitg.hardcore.Hardcore.leaderboards;
 
-public class PlayerListener extends AbstractListener implements Listener {
+public class PlayerListener extends AbstractListener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+
         Player player = e.getPlayer();
         List<String> playerIdList = MainConfig.getPlayerIdList();
         List<String> uuidList = MainConfig.getUuidList();
+
         String uuid = player.getUniqueId().toString();
         String name = player.getName();
         String playerId = uuid + "/" + name;
+
         if (!state) {
             if (uuidList.contains(uuid) && new UserDataConfig(player, uuid, name).exists()) {
                 player.setGameMode(GameMode.valueOf(new UserDataConfig(player, uuid, name).getGameMode()));
-                if(!playerIdList.contains(playerId)) {
+                if (!playerIdList.contains(playerId)) {
                     // Player name changed
-                    for(int i = 0; i < playerIdList.size(); i ++) {
-                        if(playerIdList.get(i).contains(uuid)) {
+                    for (int i = 0; i < playerIdList.size(); i ++) {
+                        if (playerIdList.get(i).contains(uuid)) {
                             // Update player id (uuid + '/' + name)
                             playerIdList.set(i, playerId);
                         }
@@ -63,10 +65,10 @@ public class PlayerListener extends AbstractListener implements Listener {
             player.sendTitle(ChatColor.BLUE + "WELCOME, NEW PLAYER!", ChatColor.GRAY + "You only have one life and do your best to survive!", 10, 150, 10);
         } else {
             // Existing player
-            if(!playerIdList.contains(playerId)) {
+            if (!playerIdList.contains(playerId)) {
                 // Player name changed
-                for(int i = 0; i < playerIdList.size(); i ++) {
-                    if(playerIdList.get(i).contains(uuid)) {
+                for (int i = 0; i < playerIdList.size(); i ++) {
+                    if (playerIdList.get(i).contains(uuid)) {
                         // Update player id (uuid + '/' + name)
                         playerIdList.set(i, playerId);
                     }
@@ -74,6 +76,7 @@ public class PlayerListener extends AbstractListener implements Listener {
                 MainConfig.setPlayerIdList(playerIdList);
                 MainConfig.save();
             }
+
             boolean playerState = new UserDataConfig(player, uuid, name).getState();
             if (!playerState) {
                 // player is dead
@@ -84,6 +87,7 @@ public class PlayerListener extends AbstractListener implements Listener {
                 player.setGameMode(GameMode.SURVIVAL);
                 player.sendTitle(ChatColor.GREEN + "YOU ARE ALIVE!", ChatColor.GRAY + "Survive and earn more points!", 10, 150, 10);
             }
+
         }
 
         // Set leaderboard for this player
@@ -108,6 +112,7 @@ public class PlayerListener extends AbstractListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
+
         if (!state) {
             return;
         }
@@ -125,13 +130,16 @@ public class PlayerListener extends AbstractListener implements Listener {
         int z = location.getBlockZ();
         String location_ = ChatColor.GRAY + "[" + ChatColor.AQUA + x + y + z + ChatColor.GRAY + "] ";
         e.setDeathMessage(e.getDeathMessage() + " @" + location_ + ChatColor.WHITE + "in " + ChatColor.GREEN + world + ChatColor.RED + " RIP D: ");
+
     }
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
+
         if (!state) {
             return;
         }
+
         Player player = e.getPlayer();
         boolean playerState = new UserDataConfig(player, player.getUniqueId().toString(), player.getName()).getState();
         if (!playerState) {
@@ -141,6 +149,7 @@ public class PlayerListener extends AbstractListener implements Listener {
             player.setGameMode(GameMode.SURVIVAL);
             player.sendTitle(ChatColor.GREEN + "YOU ARE ALIVE!", ChatColor.GRAY + "Survive and earn more points!", 10, 150, 10);
         }
+
     }
 
 }
