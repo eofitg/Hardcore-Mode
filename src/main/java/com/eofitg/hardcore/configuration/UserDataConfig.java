@@ -72,10 +72,6 @@ public class UserDataConfig extends AbstractConfig {
     public boolean triggered(String configName, String object) {
         return this.getConfig().getBoolean(configName + ".triggered." + object, false);
     }
-    // Get the number of times this event has been triggered
-    public int getTriggeredTime(String configName) {
-        return this.getConfig().getInt(configName + ".triggered-time", 0);
-    }
     // Get the number of times this object has been triggered in this event
     public int getTriggeredTime(String configName, String object) {
         return this.getConfig().getInt(configName + ".triggered-time." + object, 0);
@@ -119,10 +115,6 @@ public class UserDataConfig extends AbstractConfig {
     // Set this object's triggered state of this event
     public void setTriggered(String configName, String object, Boolean state) {
         set(configName + ".triggered." + object, state);
-    }
-    // Get the number of times this event has been triggered
-    public void setTriggeredTime(String configName, int triggeredTime) {
-        set(configName + ".triggered-time", triggeredTime);
     }
     // Set the number of times this object has been triggered in this event
     public void setTriggeredTime(String configName, String object, int triggeredTime) {
